@@ -143,4 +143,4 @@ def game_over():
 	return render_template('game_over.html',winner=winner,message=message)
 if __name__=="__main__":
 	port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+	app.run(host='0.0.0.0', port=port)
