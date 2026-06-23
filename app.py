@@ -141,4 +141,4 @@ def game_over():
 		message = "Congratulations"
 	return render_template('game_over.html',winner=winner,message=message)
 if __name__=="__main__":
-	app.run(debug=True)
+	app.run(host='0.0.0.0', port=5000)
