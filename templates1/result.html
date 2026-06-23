@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Battle Result</title>
+	<style>
+		body {
+			background: #1a1a2e;
+			font-family: Arial,sans-serif;
+			color: white;
+			text-align: center;
+		}	
+		.result {
+			font-size: 48px;
+			margin: 50px;
+			padding: 30px;
+			border-radius: 10px;
+			background: {{result_color}};
+		}
+		.stats-comparision {
+			display: flex;
+			justify-content: center;
+			gap: 50px;
+			margin: 30px;
+		}
+		.card-mini {
+			background: rgba(255,255,255,0.1);
+			padding: 20px;
+			border-radius: 10px;	
+		}
+		.next-button {
+			background: #2196F3;
+			color: white;
+			border: none;
+			padding: 15px 30px;
+			font-size: 18px;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 20px;
+		}
+		.next-button:hover {
+			background: #0b7dda;
+		}
+	</style>
+</head>
+<body>
+	<div class="result" style="background: {{result_color}}"> {{result}}</div>
+	<h2>You chose: {{stat_choice.upper()}}</h2>
+	<div class="stats-comparison">
+		<div class="card-mini">
+			<h3>{{player.name}}</h3>
+			<p>{{stat_choice}}:{{player[stat_choice]}}</p>
+		</div>
+		<div class="card-mini">
+			<h3>{{opponent.name}}</h3>
+			<p>{{stats_choice}}: {{opponent[stat_choice]}}</p>
+		</div>
+	</div>
+	<a href="/"><button class="next-button">Play Again</button></a>
+</body>
+</html>

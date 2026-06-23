@@ -9,7 +9,11 @@ def evaluate(choice,player1,player2):
 		stat = STAT_CHOICES[choice]		#if choice is rank or bowling economy it should be low for the player to win 
 		stat1 = player1[stat]
 		stat2 = player2[stat]
-		if(stat1<=stat2):
+		if(stat1==0):
+			return 0
+		elif(stat2==0):
+			return 1
+		elif(stat1<=stat2):
 			return 1
 		else:
 			return 0

@@ -56,7 +56,7 @@ if __name__=="__main__":
 			input("Press Enter to continue: ")
 			print("------Your opponent card is ------")
 			printing(cards[player2[0]])					#printing player 2 card
-			comp_choice = random.randint(1,10)				# for now the computer makes random choice later we can make it intelligent
+			comp_choice = random.randint(1,11)				# for now the computer makes random choice later we can make it intelligent
 			game = evaluate(comp_choice,cards[player1[0]],cards[player2[0]])		#calling the game engine
 			print(f"The Opponent choose stat {comp_choice}")
 			if(game==0):

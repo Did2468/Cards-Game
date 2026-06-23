@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Your Turn</title>
+	<style>
+		body {
+			background: #1a1a2e;
+			color: white;
+			font-family: Arial,sans-serif;
+			text-align: center;
+			padding: 20px;
+		}
+		.header {
+			margin: 20px;
+		}
+		.deck-info {
+			font-size: 18px;
+			margin: 10px;	
+		}
+		.card {
+			width: 350px;
+			margin: 20px auto;
+			padding: 20px;
+			background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+			border-radius: 10px;
+			box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+		}
+		.stat {
+			display: flex;
+			justify-content: space-between;
+			padding: 10px;
+			margin: 5px 0;
+			background: rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+		button {
+			background: #4CAF50;
+			color: white;
+			border: none;
+			padding: 8px 15px;
+			border-radius: 5px;
+			cursor: pointer;	
+		}
+		button:hover {
+			background: #45a049;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		<h1>Your Card</h1>
+		<div class="deck-info">
+			Your Cards: {{cards_left}}  | AI Cards: {{ai_cards_left}}
+		</div>
+		<p>Choose a stat to battle with</p>
+	</div>
+	<div class="card">
+		<h2>{{player_card.name}}</h2>
+		<form method="POST" action="/player_choice">
+			<div class="stat">
+				<span>Rank: {{player_card.rank}}</span>
+				<button type="submit" name="stat_choice" value="rank">Choose</button>
+			</div>
+			<div class="stat">
+				<span>Matches: {{player_card.matches}}</span>
+				<button type="submit" name="stat_choice" value="matches">Choose</button>
+			</div>
+			<div class="stat">
+				<span>Runs: {{player_card.runs}}</span>
+				<button type="submit" name="stat_choice" value="runs">Choose</button>
+			</div>
+			<div class="stat">
+				<span>Balls: {{player_card.balls}}</span>
+				<button type="submit" name="stat_choice" value="balls">Choose</button>
+			</div>
+
+			<div class="stat">
+				<span>Fifties: {{player_card.fifties}}</span>
+				<button type="submit" name="stat_choice" value="fifties">Choose</button>
+			</div>
+			<div class="stat">
+				<span>Hundreds: {{player_card.hundreds}}</span>
+				<button type="submit" name="stat_choice" value="hundreds">Choose</button>
+			</div>
+			<div class="stat">
+				<span>Strike Rate: {{player_card.sr}}</span>
+				<button type="submit" name="stat_choice" value="sr">Choose</button>
+			</div>
+			<div class="stat">
+				<span>Wickets: {{player_card.wickets}}</span>
+				<button type="submit" name="stat_choice" value="wickets">Choose</button>
+			</div>
+			<div class="stat">
+				<span>Economy: {{player_card.econ}}</span>
+				<button type="submit" name="stat_choice" value="econ">Choose</button>
+			</div>
+			<div class="stat">
+				<span>Best figures: {{player_card.best_w}}/{{player_card.best_r}}</span>
+				<button type="submit" name="stat_choice" value="best_figures">Choose</button>
+			</div>
+
+		</form>
+	</div>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<title>Battle Result</title>
+
+<style>
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body {
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-family:"Segoe UI", sans-serif;
+
+    background:#3f8f4f;
+
+    padding:15px;
+
+    color:#222;
+
+}
+
+
+.container {
+
+    width:100%;
+    max-width:420px;
+
+    text-align:center;
+
+}
+
+
+
+/* result banner */
+
+
+.result {
+
+    font-size:2rem;
+
+    font-weight:800;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    margin-bottom:15px;
+
+    color:white;
+
+    background: {{result_color}};
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.25);
+
+}
+
+
+
+h2 {
+
+    color:white;
+
+    font-size:1rem;
+
+    margin-bottom:15px;
+
+}
+
+
+.compare {
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+
+}
+
+
+
+/* mini cards */
+
+
+.card-mini {
+
+    background:#fffdf5;
+
+    border-radius:15px;
+
+    padding:15px;
+
+    border:3px solid #e0b52c;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.25);
+
+}
+
+
+
+.card-mini h3 {
+
+    color:#1b5e20;
+
+    font-size:1rem;
+
+    margin-bottom:10px;
+
+}
+
+
+
+.card-mini p {
+
+    background:#f3f5f3;
+
+    border-radius:10px;
+
+    padding:10px;
+
+    font-weight:700;
+
+    font-size:.85rem;
+
+}
+
+
+
+/* button */
+
+
+.next-button {
+
+
+    margin-top:20px;
+
+    background:#f4c542;
+
+    color:#222;
+
+
+    border:none;
+
+    padding:13px 30px;
+
+
+    border-radius:25px;
+
+
+    font-size:1rem;
+
+    font-weight:800;
+
+
+    cursor:pointer;
+
+
+    transition:.2s;
+
+}
+
+
+.next-button:hover {
+
+    background:#ffca28;
+
+    transform:translateY(-2px);
+
+}
+
+
+.next-button:active {
+
+    transform:scale(.97);
+
+}
+
+
+
+a {
+
+    text-decoration:none;
+
+}
+
+
+
+@media(max-width:380px){
+
+
+.compare {
+
+    grid-template-columns:1fr;
+
+}
+
+
+.result {
+
+    font-size:1.6rem;
+
+}
+
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="result">
+
+{{result}}
+
+</div>
+
+
+
+<h2>
+You chose: {{stat_choice.upper()}}
+</h2>
+
+
+
+<div class="compare">
+
+
+
+<div class="card-mini">
+
+<h3>
+{{player.name}}
+</h3>
+
+<p>
+{{stat_choice}}:
+{{player[stat_choice]}}
+</p>
+
+</div>
+
+
+
+
+
+<div class="card-mini">
+
+<h3>
+{{opponent.name}}
+</h3>
+
+
+<p>
+
+{{stats_choice}}:
+{{opponent[stat_choice]}}
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<a href="/">
+
+<button class="next-button">
+
+Play Again
+
+</button>
+
+</a>
+
+
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Toss</title>	
+	<style>
+		body {
+			background: #1a1a2e;
+			color: white;
+			font-family: Arial,sans-serif;
+			text-align: center;
+			padding: 50px;
+		}
+		.coin-btn {
+			background: #FFD700;
+			color: #000;
+			padding: 30px 50px;
+			font-size: 20px;
+			border: none;
+			border-radius: 50%;
+			cursor: pointer;
+			margin: 20px;
+			width: 150px;
+			height: 150px;
+		}
+		.coin-btn:hover {
+			background: #FFA500;
+		}
+	</style>
+</head>
+<body>
+	<h1>Toss Time!</h1>	
+	<p>Choose head or tails</p>
+	
+	<form method="POST" action="/toss_result">
+		<button type="submit" name="choice" value="0" class="coin-btn">
+			HEADS
+		</button>
+		<button type="submit" name="choice" value="1" class="coin-btn">
+			TAILS
+		</button>
+	</form>
+</body>
+</html>

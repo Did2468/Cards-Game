@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Toss Result</title>
+
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        min-height: 100vh;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        font-family: "Segoe UI", sans-serif;
+
+        background:
+            linear-gradient(
+                to bottom,
+                #dff2ff 0%,
+                #dff2ff 45%,
+                #67b85f 45%,
+                #5ba854 100%
+            );
+
+        color: #222;
+    }
+
+    .result {
+        font-size: 3rem;
+        font-weight: 700;
+
+        background: rgba(255,255,255,0.95);
+
+        padding: 30px 40px;
+
+        border-radius: 18px;
+
+        box-shadow:
+            0 10px 30px rgba(0,0,0,0.12);
+
+        margin-bottom: 20px;
+
+        color: #1f3d21;
+        text-align: center;
+    }
+
+    p {
+        font-size: 1.15rem;
+        color: #444;
+
+        background: rgba(255,255,255,0.9);
+
+        padding: 15px 25px;
+
+        border-radius: 12px;
+
+        margin-bottom: 30px;
+    }
+
+    .btn {
+        background: #2e7d32;
+        color: white;
+
+        padding: 15px 35px;
+
+        font-size: 1rem;
+        font-weight: 600;
+
+        border: none;
+        border-radius: 10px;
+
+        cursor: pointer;
+
+        transition: all 0.2s ease;
+
+        box-shadow:
+            0 4px 12px rgba(46,125,50,0.25);
+    }
+
+    .btn:hover {
+        background: #1b5e20;
+        transform: translateY(-2px);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    a {
+        text-decoration: none;
+    }
+    </style>
+</head>
+
+<body>
+
+    {% if won == 1 %}
+        <div class="result">You won the Toss!</div>
+        <p>You will go first!</p>
+    {% else %}
+        <div class="result">You lost the Toss</div>
+        <p>Computer will go first</p>
+    {% endif %}
+
+    <a href="/setup">
+        <button class="btn">Continue to the game</button>
+    </a>
+
+</body>
+</html>

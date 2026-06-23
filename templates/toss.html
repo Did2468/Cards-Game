@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toss Time</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: "Segoe UI", sans-serif;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #dff2ff 0%,
+            #dff2ff 45%,
+            #67b85f 45%,
+            #5ba854 100%
+        );
+}
+
+.container {
+    width: 90%;
+    max-width: 650px;
+
+    background: rgba(255,255,255,0.95);
+
+    padding: 50px;
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.12);
+}
+
+.emoji {
+    font-size: 70px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    color: #1f3d21;
+    font-size: 2.7rem;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 35px;
+    font-size: 1.05rem;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.coin-btn {
+    width: 180px;
+    height: 180px;
+
+    border: none;
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    font-size: 1.2rem;
+    font-weight: 700;
+
+    background: #f4c542;
+    color: #222;
+
+    box-shadow:
+        inset 0 4px 8px rgba(255,255,255,0.4),
+        0 6px 15px rgba(0,0,0,0.15);
+
+    transition: all 0.2s ease;
+}
+
+.coin-btn:hover {
+    transform: translateY(-4px);
+    background: #eab308;
+}
+
+.coin-btn:active {
+    transform: translateY(0);
+}
+
+.coin-icon {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.note {
+    margin-top: 25px;
+    color: #888;
+    font-size: 0.9rem;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Toss Time!</h1>
+
+    <p class="subtitle">
+        Call the toss.
+    </p>
+
+    <form method="POST" action="/toss_result">
+        <div class="buttons">
+
+            <button
+                type="submit"
+                name="choice"
+                value="0"
+                class="coin-btn">
+                <span class="coin-icon">🪙</span>
+                HEADS
+            </button>
+
+            <button
+                type="submit"
+                name="choice"
+                value="1"
+                class="coin-btn">
+                <span class="coin-icon">🪙</span>
+                TAILS
+            </button>
+
+        </div>
+    </form>
+
+
+</div>
+
+</body>
+</html>

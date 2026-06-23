@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Toss Result</title>	
+	<style>
+		body {
+			background: #1a1a2e;
+			color: white;
+			font-family: Arial,sans-serif;
+			text-align: center;
+			padding: 50px;
+		}
+		.result {
+			font-size: 48px;
+			margin: 30px;
+		}
+		.btn {
+			background: #2196F3;
+			color: white;
+			padding: 15px 30px;
+			font-size: 18px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+	
+	</style>
+</head>
+<body>
+	{% if won == 1%}
+		<div class="result">You won the Toss!</div>
+		<p>You will go first!></p>
+	{% else %}
+		<div class="result">You lost the Toss</div>
+		<p>Computer will go first</p>
+	{% endif %}
+	<a href="/setup">
+		<button class="btn">Continue to the game</button>
+	</a>
+</body>
+</html>

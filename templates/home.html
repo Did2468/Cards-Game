@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cricket Card Battle</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+    /* Sky + Grass */
+    background:
+        linear-gradient(
+            to bottom,
+            #dff2ff 0%,
+            #dff2ff 45%,
+            #67b85f 45%,
+            #5ba854 100%
+        );
+}
+
+.container {
+    width: 90%;
+    max-width: 550px;
+
+    background: rgba(255,255,255,0.95);
+
+    padding: 50px;
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.12);
+}
+
+.logo {
+    font-size: 70px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    color: #1f3d21;
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+}
+
+p {
+    color: #666;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 35px;
+}
+
+.btn {
+    display: inline-block;
+
+    background: #2e7d32;
+    color: white;
+
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    padding: 15px 35px;
+
+    border-radius: 10px;
+
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background: #1b5e20;
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.footer {
+    margin-top: 25px;
+    color: #888;
+    font-size: 0.9rem;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="logo">🏏</div>
+
+    <h1>Cricket Card Battle</h1>
+
+    <p>
+        Pick your cards, challenge the computer,
+        and build the strongest cricket lineup.
+    </p>
+
+    <a href="/toss" class="btn">
+        Play vs Computer
+    </a>
+
+    <div class="footer">
+        Single Player Mode
+    </div>
+</div>
+
+</body>
+</html>

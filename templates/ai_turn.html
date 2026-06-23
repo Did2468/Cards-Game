@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI's Turn</title>
+
+<style>
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body {
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-family:"Segoe UI", sans-serif;
+
+    background:#3f8f4f;
+
+    padding:10px;
+
+    color:#222;
+
+}
+
+
+
+/* whole area */
+
+.container {
+
+    width:100%;
+    max-width:340px;
+
+    text-align:center;
+
+}
+
+
+
+/* header */
+
+
+.header {
+
+    margin-bottom:12px;
+
+    color:white;
+
+}
+
+
+.deck-info {
+
+    display:inline-block;
+
+    background:rgba(0,0,0,.35);
+
+    padding:7px 14px;
+
+    border-radius:20px;
+
+    font-size:.85rem;
+
+    font-weight:bold;
+
+}
+
+
+.header p {
+
+    margin-top:8px;
+
+    font-size:.85rem;
+
+}
+
+
+.header em {
+
+    opacity:.85;
+
+}
+
+
+
+/* card */
+
+
+.card {
+
+    background:#fffdf5;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    border:3px solid #e0b52c;
+
+
+    box-shadow:
+
+        0 12px 25px rgba(0,0,0,.35);
+
+}
+
+
+
+.card h2 {
+
+    background:#455a64;
+
+    color:white;
+
+    padding:15px;
+
+    font-size:1.25rem;
+
+}
+
+
+
+
+
+.stats {
+
+    padding:10px;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+
+}
+
+
+
+.stat {
+
+    background:#f3f5f3;
+
+    border-radius:10px;
+
+    padding:9px;
+
+    font-size:.8rem;
+
+    border-left:3px solid #607d8b;
+
+}
+
+
+
+.stat strong {
+
+    display:block;
+
+    color:#555;
+
+    font-size:.7rem;
+
+}
+
+
+
+.stat {
+
+    font-weight:700;
+
+}
+
+
+
+
+/* button */
+
+
+form {
+
+    margin-top:15px;
+
+}
+
+
+button {
+
+
+    background:#f4c542;
+
+    color:#222;
+
+
+    border:none;
+
+    padding:12px 28px;
+
+    border-radius:22px;
+
+
+    font-weight:800;
+
+    cursor:pointer;
+
+
+    transition:.2s;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,.2);
+
+}
+
+
+
+button:hover {
+
+    background:#ffca28;
+
+    transform:translateY(-2px);
+
+}
+
+
+button:active {
+
+    transform:scale(.97);
+
+}
+
+
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+<div class="container">
+
+
+
+<div class="header">
+
+
+<div class="deck-info">
+Your Cards: {{cards_left}}
+</div>
+
+
+<p>
+The opponent is choosing a stat.....
+</p>
+
+
+<p>
+<em>
+Review Your card before seeing the result
+</em>
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h2>
+YOUR CARD<br>
+{{player_card.name}}
+</h2>
+
+
+
+<div class="stats">
+
+
+<div class="stat">
+<strong>Rank</strong>
+{{player_card.rank}}
+</div>
+
+
+<div class="stat">
+<strong>Matches</strong>
+{{player_card.matches}}
+</div>
+
+
+<div class="stat">
+<strong>Runs</strong>
+{{player_card.runs}}
+</div>
+
+
+<div class="stat">
+<strong>Balls</strong>
+{{player_card.balls}}
+</div>
+
+
+<div class="stat">
+<strong>Fifties</strong>
+{{player_card.fifties}}
+</div>
+
+
+<div class="stat">
+<strong>Hundreds</strong>
+{{player_card.hundreds}}
+</div>
+
+
+<div class="stat">
+<strong>Strike Rate</strong>
+{{player_card.sr}}
+</div>
+
+
+<div class="stat">
+<strong>Wickets</strong>
+{{player_card.wickets}}
+</div>
+
+
+<div class="stat">
+<strong>Economy</strong>
+{{player_card.econ}}
+</div>
+
+
+<div class="stat">
+<strong>Best</strong>
+{{player_card.best_w}}/{{player_card.best_r}}
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+<form method="POST" action="/ai_choice">
+
+<button type="submit">
+See Result
+</button>
+
+</form>
+
+
+
+</div>
+
+
+</body>
+</html>

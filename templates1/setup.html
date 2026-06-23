@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Game Setup</title>
+	<style>
+		body {
+			background: #1a1a2e;
+			color: white;
+			font-family: Arial,sans-serif;
+			text-align: center;
+			padding: 50px;
+		}
+		input {
+			font-size: 24px;
+			padding: 10px;
+			margin: 20px;
+			width: 200px;
+		}
+		.btn {
+			background: #4CAF50;
+			color: white;
+			padding: 15px 30px;
+			font-size: 18px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<h1>Game Setup</h1>
+	<p>How many cards do u want to play with?</p>
+	<p>(Maximum: {{max_cards}})</p>
+	<form method="POST" action="/start_game">
+		<input type="number" name="num_cards" min="2" max="{{max_cards}}" value="10")>
+		<br>
+		<button type="submit" class="btn">Start Game!</button>
+		
+	</form>	
+</body>
+</html>

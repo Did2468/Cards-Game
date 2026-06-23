@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Battle Result</title>
+
+<style>
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body {
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-family:"Segoe UI",sans-serif;
+
+    background:#3f8f4f;
+
+    padding:15px;
+
+    color:#222;
+
+}
+
+
+.container {
+
+    width:100%;
+    max-width:650px;
+
+    text-align:center;
+
+}
+
+
+
+.result {
+
+    font-size:2.3rem;
+
+    font-weight:900;
+
+    color:white;
+
+    margin-bottom:12px;
+
+}
+
+
+
+.choice {
+
+    color:white;
+
+    margin-bottom:20px;
+
+    font-size:1rem;
+
+}
+
+
+
+
+
+.cards-container {
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:15px;
+
+}
+
+
+
+
+.card {
+
+    background:#fffdf5;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    border:4px solid #e0b52c;
+
+    box-shadow:
+        0 12px 25px rgba(0,0,0,.3);
+
+}
+
+
+
+.player-card {
+
+    border-top:8px solid #2e7d32;
+
+}
+
+
+
+.ai-card {
+
+    border-top:8px solid #c62828;
+
+}
+
+
+
+
+.card-title {
+
+    background:#f3f5f3;
+
+    padding:12px;
+
+}
+
+
+
+.card-title h3 {
+
+    font-size:.75rem;
+
+    color:#666;
+
+}
+
+
+
+.card-title h2 {
+
+    color:#1b5e20;
+
+    font-size:1.1rem;
+
+    margin-top:5px;
+
+}
+
+
+
+
+
+.stats {
+
+    padding:10px;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+
+}
+
+
+
+
+.stat {
+
+    background:#f3f5f3;
+
+    border-radius:10px;
+
+    padding:8px;
+
+    font-size:.75rem;
+
+    font-weight:700;
+
+}
+
+
+
+.stat-name {
+
+    display:block;
+
+    color:#777;
+
+    font-size:.65rem;
+
+}
+
+
+
+
+
+.highlight {
+
+    background:#ffe082;
+
+    border:2px solid #f9a825;
+
+}
+
+
+
+
+.cards-left {
+
+    padding:10px;
+
+    font-size:.8rem;
+
+    color:#666;
+
+    font-weight:bold;
+
+}
+
+
+
+
+button {
+
+
+    margin-top:20px;
+
+
+    background:#f4c542;
+
+    color:#222;
+
+
+    border:none;
+
+    padding:13px 35px;
+
+
+    border-radius:25px;
+
+
+    font-weight:800;
+
+
+    cursor:pointer;
+
+
+}
+
+
+
+button:hover {
+
+    background:#ffca28;
+
+}
+
+
+
+
+a {
+
+    text-decoration:none;
+
+}
+
+
+
+
+@media(max-width:500px){
+
+.cards-container {
+
+    grid-template-columns:1fr;
+
+}
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+
+<div class="result">
+{{result}}
+</div>
+
+
+
+<div class="choice">
+
+chosen:
+
+{{ stat_choice.upper().replace('_',' ') }}
+
+</div>
+
+
+
+
+
+<div class="cards-container">
+
+
+
+
+
+<!-- PLAYER CARD -->
+
+<div class="card player-card">
+
+
+<div class="card-title">
+
+<h3>YOUR CARD</h3>
+
+<h2>
+{{player_card.name}}
+</h2>
+
+</div>
+
+
+
+
+<div class="stats">
+
+
+<div class="stat">
+<span class="stat-name">Rank</span>
+{{player_card.rank}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Matches</span>
+{{player_card.matches}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Runs</span>
+{{player_card.runs}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Balls</span>
+{{player_card.balls}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">50s</span>
+{{player_card.fifties}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">100s</span>
+{{player_card.hundreds}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">SR</span>
+{{player_card.sr}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Wickets</span>
+{{player_card.wickets}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Economy</span>
+{{player_card.econ}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Best</span>
+{{player_card.best_w}}/{{player_card.best_r}}
+</div>
+
+
+</div>
+
+
+<div class="cards-left">
+Cards Left: {{player_deck_size}}
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- AI CARD -->
+
+
+<div class="card ai-card">
+
+
+<div class="card-title">
+
+<h3>OPPONENT CARD</h3>
+
+<h2>
+{{ai_card.name}}
+</h2>
+
+</div>
+
+
+
+
+
+<div class="stats">
+
+
+<div class="stat">
+<span class="stat-name">Rank</span>
+{{ai_card.rank}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Matches</span>
+{{ai_card.matches}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Runs</span>
+{{ai_card.runs}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Balls</span>
+{{ai_card.balls}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">50s</span>
+{{ai_card.fifties}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">100s</span>
+{{ai_card.hundreds}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">SR</span>
+{{ai_card.sr}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Wickets</span>
+{{ai_card.wickets}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Economy</span>
+{{ai_card.econ}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Best</span>
+{{ai_card.best_w}}/{{ai_card.best_r}}
+</div>
+
+
+</div>
+
+
+
+<div class="cards-left">
+
+Cards Left: {{ai_deck_size}}
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<a href="/next_round">
+
+<button>
+Next Round
+</button>
+
+</a>
+
+
+
+
+</div>
+
+
+</body>
+</html>

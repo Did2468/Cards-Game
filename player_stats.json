@@ -1,18 +1,18 @@
 [
     {
-        "id": 1,
-        "name": "Virat Kohli",
-        "rank": 2,
-        "matches": 311,
-        "runs": 14797,
-        "balls": 15771,
-        "fifties": 77,
-        "hundreds": 54,
-        "sr": 93.82,
-        "wickets": 5,
-        "econ": 6.16,
-        "best_w": 1,
-        "best_r": 13
+       "id": 1,
+       "name": "Virat Kohli",
+       "rank": 2,
+       "matches": 311,
+       "runs": 14797,
+       "balls": 15771,
+       "fifties": 77,
+       "hundreds": 54,
+       "sr": 93.82,
+       "wickets": 5,
+       "econ": 6.16,
+       "best_w": 1,
+       "best_r": 13
     },
     {
         "id": 2,

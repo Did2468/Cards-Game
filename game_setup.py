@@ -21,4 +21,19 @@ def distribute(len_cards):
 	player2 = cards[(CARD_NUM//2):]
 	
 	return player1,player2
+
+def toss_logic(user_choice):
+	t = random.randint(0,1)
+	if(user_choice==t):
+		return 1
+	else:
+		return 0
+
+def distribute_logic(len_cards,card_num):
+	cards = random.sample(range(1,len_cards+1),card_num)
+	random.shuffle(cards)
+	player1 = cards[:(card_num//2)]
+	player2 = cards[(card_num//2):]
+	
+	return player1,player2
 	

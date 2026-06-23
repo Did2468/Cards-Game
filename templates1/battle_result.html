@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Battle Result</title>
+	<style>
+		body {
+			background: #1a1a2e;
+			color: white;
+			font-family: Arial,sans-serif;
+			text-align: center;
+		}
+		.result {
+			font-size: 48px;
+			padding: 30px;
+			margin: 20px;
+		}
+		.cards-container {
+			display: flex;
+			justify-content: center;
+			gap: 30px;
+			margin: 20px;
+		}
+		.card {
+			width: 300px;
+			padding: 20px;
+			border-radius: 10px;
+		}
+		.player-card {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);	
+		}
+		.ai-card {
+			background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+		}
+		.stat-highlight {
+			font-size: 32px;
+			font-weight: bold;
+			padding: 15px;
+			background: rgba(255,255,255,0.2);
+			border-radius: 5px;
+			margin: 10px 0;	
+		}
+		button {
+			background: #4CAF50;
+			color: white;
+			border: none;
+			padding: 15px 30px;
+			font-size: 18px;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div class="result">{{result}}</div>	
+
+    	<h2>{% if chosen_by == 'player' %}You{% else %}AI{% endif %} chose: {{ stat_choice.upper().replace('_', ' ') }}</h2>
+    
+    	<div class="cards-container">
+        	<div class="card player-card">
+            	<h3>YOUR CARD</h3>
+            	<h2>{{ player_card.name }}</h2>
+            	<div class="stat-highlight">{{ player_stat }}</div>
+            	<p>Cards Left: {{ player_deck_size }}</p>
+        </div>
+        
+        <div class="card ai-card">
+            <h3>OPPONENT'S CARD</h3>
+            <h2>{{ ai_card.name }}</h2>
+            <div class="stat-highlight">{{ ai_stat }}</div>
+            <p>Cards Left: {{ ai_deck_size }}</p>
+        </div>
+    </div>
+    
+    <a href="/next_round"><button>Next Round</button></a>
+</body>
+</html>

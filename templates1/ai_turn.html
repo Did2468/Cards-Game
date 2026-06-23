@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AI's Turn</title>
+	<style>
+		body {
+			background: #1a1a2e;
+			color: white;
+			font-family: Arial,sans-serif;
+			text-align: center;
+			padding: 50px;
+		}
+		.header {
+			margin: 20px;
+		}
+		.deck-info {
+			font-size: 18px;
+			margin: 10px;	
+		}
+		.card {
+			width: 350px;
+			margin: 20px auto;
+			padding: 20px;
+			background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+			border-radius: 10px;
+			box-shadow: 0 8px 16px rgba(0,0,0,0.3);		
+		}
+		.stat {
+			padding: 10px;
+			margin: 5px 0;
+			background: rgba(0,0,0,0.2);
+			border-radius: 5px;
+			text-align: left;
+		}
+		button {
+			background: #2196F3;
+			color: white;
+			border: none;
+			padding: 15px 30px;
+			font-size: 18px;
+			border-radius: 5px;
+			cursor: pointer;
+			margin-top: 20px;
+		}
+		button:hover {
+			background: #0b7dda;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		<div class="deck-info">
+			Your Cards: {{cards_left}}
+		</div>
+		<p>The opponent is choosing a stat.....</p>
+		<p><em>Review Your card before seeing the result</em></p>
+	</div>
+	<div class="card">
+		<h2>YOUR CARD<br>{{player_card.name}}</h2>
+		<div class="stat"><strong>Rank:</strong>{{player_card.rank}}</div>
+		<div class="stat"><strong>Matches:</strong>{{player_card.matches}}</div>
+		<div class="stat"><strong>Runs:</strong>{{player_card.runs}}</div>
+		<div class="stat"><strong>Balls:</strong>{{player_card.balls}}</div>
+		<div class="stat"><strong>Fifties:</strong>{{player_card.fifties}}</div>
+		<div class="stat"><strong>Hundreds:</strong>{{player_card.hundreds}}</div>
+		<div class="stat"><strong>Strike Rate:</strong>{{player_card.sr}}</div>
+		<div class="stat"><strong>Wickets:</strong>{{player_card.wickets}}</div>
+		<div class="stat"><strong>Economy:</strong>{{player_card.econ}}</div>
+		<div class="stat"><strong>Best:</strong>{{player_card.best_w}}/{{player_card.best_r}}</div>
+	</div>
+	<form method="POST" action="/ai_choice">
+		<button type="submit">See Result</button>
+	</form>
+</body>
+</html>

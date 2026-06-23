@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Setup</title>
+
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        min-height: 100vh;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-family: "Segoe UI", sans-serif;
+
+        background:
+            linear-gradient(
+                to bottom,
+                #dff2ff 0%,
+                #dff2ff 45%,
+                #67b85f 45%,
+                #5ba854 100%
+            );
+    }
+
+    .container {
+        width: 90%;
+        max-width: 550px;
+
+        background: rgba(255,255,255,0.95);
+
+        padding: 50px;
+
+        border-radius: 18px;
+
+        text-align: center;
+
+        box-shadow:
+            0 10px 30px rgba(0,0,0,0.12);
+    }
+
+    h1 {
+        color: #1f3d21;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+    }
+
+    p {
+        color: #555;
+        margin-bottom: 12px;
+        font-size: 1.05rem;
+    }
+
+    .max-cards {
+        font-weight: 600;
+        color: #2e7d32;
+        margin-bottom: 25px;
+    }
+
+    input {
+        width: 220px;
+
+        padding: 14px;
+
+        font-size: 1.2rem;
+        text-align: center;
+
+        border: 2px solid #cfd8dc;
+        border-radius: 10px;
+
+        margin-bottom: 25px;
+
+        outline: none;
+        transition: 0.2s;
+    }
+
+    input:focus {
+        border-color: #2e7d32;
+    }
+
+    .btn {
+        background: #2e7d32;
+        color: white;
+
+        padding: 15px 35px;
+
+        font-size: 1rem;
+        font-weight: 600;
+
+        border: none;
+        border-radius: 10px;
+
+        cursor: pointer;
+
+        transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+        background: #1b5e20;
+        transform: translateY(-2px);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Game Setup</h1>
+
+        <p>How many cards do u want to play with?</p>
+
+        <p class="max-cards">
+            (Maximum: {{max_cards}})
+        </p>
+
+        <form method="POST" action="/start_game">
+
+            <input
+                type="number"
+                name="num_cards"
+                min="2"
+                max="{{max_cards}}"
+                value="10">
+
+            <br>
+
+            <button type="submit" class="btn">
+                Start Game!
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>
