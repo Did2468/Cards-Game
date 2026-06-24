@@ -1,0 +1,10 @@
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
