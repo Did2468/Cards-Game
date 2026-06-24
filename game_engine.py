@@ -1,12 +1,18 @@
 import random
-STAT_CHOICES = {
+QSTAT_CHOICES = {
     1: "rank", 2: "matches", 3: "runs", 4: "balls", 5: "fifties", 
     6: "hundreds", 7: "sr", 8: "wickets", 9: "econ", 10: "best_figures"
 }
+STAT_CHOICES = {
+    1 : "matches" , 2 : "not_outs" , 3: "runs_scored", 4: "highest", 5: "bat_avg",
+    6: "balls_faced", 7: "bat_sr", 8: "hundreds", 9: "fifties", 10: "balls_bowled",
+    11: "runs_given", 12: "catches", 13: "wickets", 14: "ball_avg",15: "economy",
+    16: "ball_sr", 17: "best_figures",18: "five_w"
+}
 
 def evaluate(choice,player1,player2):
-	if(choice == 1 or choice == 9):
-		stat = STAT_CHOICES[choice]		#if choice is rank or bowling economy it should be low for the player to win 
+	if(choice == 11 or choice == 14 or choice == 15):
+		stat = STAT_CHOICES[choice]		#if choice is runs_given or bowling economy or bowling avg  it should be low for the player to win 
 		stat1 = player1[stat]
 		stat2 = player2[stat]
 		if(stat1==0):
@@ -17,7 +23,7 @@ def evaluate(choice,player1,player2):
 			return 1
 		else:
 			return 0
-	elif(choice==10):
+	elif(choice==17):
 		stat_w = "best_w"			# for best_figures its a bit complicated so this 
 		stat_r = "best_r"
 		
@@ -39,7 +45,11 @@ def evaluate(choice,player1,player2):
 		stat = STAT_CHOICES[choice]			# if choice is remaining anything it should be greater to be won
 		stat1 = player1[stat]
 		stat2 = player2[stat]
-		if(stat1>=stat2):
+		if(stat1==0):
+			return 0
+		elif(stat2==0):
+			return 1
+		elif(stat1>=stat2):
 			return 1
 		else:
 			return 0

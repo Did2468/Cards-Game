@@ -339,44 +339,44 @@ chosen:
 
 
 <div class="stat">
-<span class="stat-name">Rank</span>
-{{player_card.rank}}
-</div>
-
-
-<div class="stat">
 <span class="stat-name">Matches</span>
 {{player_card.matches}}
 </div>
 
 
 <div class="stat">
+<span class="stat-name">Balls Bowled</span>
+{{player_card.balls_bowled}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Not Outs</span>
+{{player_card.not_outs}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Runs Given</span>
+{{player_card.runs_given}}
+</div>
+
+
+<div class="stat">
 <span class="stat-name">Runs</span>
-{{player_card.runs}}
+{{player_card.runs_scored}}
 </div>
 
 
 <div class="stat">
-<span class="stat-name">Balls</span>
-{{player_card.balls}}
+<span class="stat-name">Catches</span>
+{{player_card.catches}}
 </div>
 
 
 <div class="stat">
-<span class="stat-name">50s</span>
-{{player_card.fifties}}
-</div>
-
-
-<div class="stat">
-<span class="stat-name">100s</span>
-{{player_card.hundreds}}
-</div>
-
-
-<div class="stat">
-<span class="stat-name">SR</span>
-{{player_card.sr}}
+<span class="stat-name">High Score</span>
+{{player_card.highest}}
 </div>
 
 
@@ -387,15 +387,57 @@ chosen:
 
 
 <div class="stat">
-<span class="stat-name">Economy</span>
-{{player_card.econ}}
+<span class="stat-name">Batting Avg</span>
+{{player_card.bat_avg}}
 </div>
 
 
 <div class="stat">
-<span class="stat-name">Best</span>
+<span class="stat-name">Bowl Avg</span>
+{{player_card.ball_avg}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Balls</span>
+{{player_card.balls_faced}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Economy</span>
+{{player_card.economy}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Strike Rate</span>
+{{player_card.bat_sr}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Bowl Sr</span>
+{{player_card.ball_sr}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Hundreds</span>
+{{player_card.hundreds}}
+</div>
+
+<div class="stat">
+<span class="stat-name">5wi</span>
+{{player_card.five_w}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Fifties</span>
+{{player_card.fifties}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Best figures</span>
 {{player_card.best_w}}/{{player_card.best_r}}
 </div>
+
+
 
 
 </div>
@@ -431,16 +473,7 @@ Cards Left: {{player_deck_size}}
 </div>
 
 
-
-
-
 <div class="stats">
-
-
-<div class="stat">
-<span class="stat-name">Rank</span>
-{{ai_card.rank}}
-</div>
 
 
 <div class="stat">
@@ -450,32 +483,38 @@ Cards Left: {{player_deck_size}}
 
 
 <div class="stat">
+<span class="stat-name">Balls Bowled</span>
+{{ai_card.balls_bowled}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Not Outs</span>
+{{ai_card.not_outs}}
+</div>
+
+
+<div class="stat">
+<span class="stat-name">Runs Given</span>
+{{ai_card.runs_given}}
+</div>
+
+
+<div class="stat">
 <span class="stat-name">Runs</span>
-{{ai_card.runs}}
+{{ai_card.runs_scored}}
 </div>
 
 
 <div class="stat">
-<span class="stat-name">Balls</span>
-{{ai_card.balls}}
+<span class="stat-name">Catches</span>
+{{ai_card.catches}}
 </div>
 
 
 <div class="stat">
-<span class="stat-name">50s</span>
-{{ai_card.fifties}}
-</div>
-
-
-<div class="stat">
-<span class="stat-name">100s</span>
-{{ai_card.hundreds}}
-</div>
-
-
-<div class="stat">
-<span class="stat-name">SR</span>
-{{ai_card.sr}}
+<span class="stat-name">High Score</span>
+{{ai_card.highest}}
 </div>
 
 
@@ -486,15 +525,58 @@ Cards Left: {{player_deck_size}}
 
 
 <div class="stat">
-<span class="stat-name">Economy</span>
-{{ai_card.econ}}
+<span class="stat-name">Batting Avg</span>
+{{ai_card.bat_avg}}
 </div>
 
 
 <div class="stat">
-<span class="stat-name">Best</span>
+<span class="stat-name">Bowl Avg</span>
+{{ai_card.ball_avg}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Balls</span>
+{{ai_card.balls_faced}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Economy</span>
+{{ai_card.economy}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Strike Rate</span>
+{{ai_card.bat_sr}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Bowl Sr</span>
+{{ai_card.ball_sr}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Hundreds</span>
+{{ai_card.hundreds}}
+</div>
+
+<div class="stat">
+<span class="stat-name">5wi</span>
+{{ai_card.five_w}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Fifties</span>
+{{ai_card.fifties}}
+</div>
+
+<div class="stat">
+<span class="stat-name">Best figures</span>
 {{ai_card.best_w}}/{{ai_card.best_r}}
 </div>
+
+
+
 
 
 </div>

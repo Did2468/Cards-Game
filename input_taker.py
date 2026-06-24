@@ -4,32 +4,47 @@ import os
 def get_input():
 	player_id = int(input("Enter the player ID: "))
 	name = input("Enter the player name: ").strip()
-	rank = int(input("Enter Rank: "))
 	matches = int(input("Enter Matches: "))
-	runs = int(input("Enter Runs: "))
-	balls = int(input("Enter balls faced: "))
-	fifties = int(input("Enter fifties: "))
-	hundreds = int(input("Enter Hundreds: "))
-	sr = float(input("Enter Strike Rate: "))
-	wickets = int(input("Enter wickets: "))
-	econ = float(input("Enter Economy rate: "))
-	best_w = int(input("Enter Best Wickets in a match: "))
-	best_r = int(input("Enter Runs conceded for best wickets: "))
-	
+	not_outs = int(input("Enter the Not outs: "))
+	runs_scored = int(input("Enter the runs scored: "))
+	highest = int(input("Enter the Highest score: "))
+	bat_avg = float(input("Enter the batting average: "))
+	balls_faced = int(input("Enter the balls faced: "))
+	bat_sr = float(input("Enter the batting strike rate: "))
+	hundreds = int(input("Enter the hundreds: "))
+	fifties = int(input("Enter the fifties: "))
+	balls_bowled = int(input("Enter the balls bowled: "))
+	runs_given = int(input("Enter the runs given: "))
+	catches = int(input("Enter the catches taken: "))
+	wickets = int(input("Enter the wickets taken: "))
+	ball_avg = float(input("Enter the bowling average: "))
+	economy = float(input("Enter the economy: "))
+	ball_sr = float(input("Enter the bowling strike rate: "))
+	best_w = int(input("Enter the best figures wickets: "))
+	best_r = int(input("Enter the best figures Runs: "))
+	five_w = int(input("Enter the five wicket hauls: "))	
 	return {
 		"id":player_id,
 		"name":name,
-		"rank":rank,
 		"matches":matches,
-		"runs":runs,
-		"balls":balls,
-		"fifties":fifties,
+		"not_outs":not_outs,
+		"runs_scored":runs_scored,
+		"highest":highest,
+		"bat_avg":bat_avg,
+		"balls_faced":balls_faced,
+		"bat_sr":bat_sr,
 		"hundreds":hundreds,
-		"sr":sr,
+		"fifties":fifties,
+		"balls_bowled":balls_bowled,
+		"runs_given":runs_given,
+		"catches":catches,
 		"wickets":wickets,
-		"econ":econ,
+		"ball_avg":ball_avg,
+		"economy":economy,
+		"ball_sr":ball_sr,
 		"best_w":best_w,
-		"best_r":best_r
+		"best_r":best_r,
+		"five_w":five_w
 	}
 
 

@@ -73,9 +73,11 @@ def play():
 def player_choice():
 	stat_name = request.form['stat_choice']
 	stat_to_num = {
-		"rank":1,"matches":2,"runs":3,"balls":4,"fifties":5,"hundreds":6,"sr":7,
-		"wickets":8,"econ":9,"best_figures":10
-		}
+    		"matches": 1, "not_outs": 2, "runs_scored": 3, "highest": 4, "bat_avg": 5,
+    		"balls_faced": 6, "bat_sr": 7, "hundreds": 8, "fifties": 9, "balls_bowled": 10,
+    		"runs_given": 11, "catches": 12, "wickets": 13, "ball_avg": 14, "economy": 15,
+    		"ball_sr": 16, "best_figures": 17, "five_w": 18
+	}
 	stat_num = stat_to_num[stat_name]
 	session['last_stat_choice'] = stat_num
 	session['last_stat_name'] = stat_name
@@ -87,9 +89,11 @@ def player_choice():
 def ai_choice():
 	stat_num = random.randint(1,10)
 	STAT_CHOICES = {
-        	1: "rank", 2: "matches", 3: "runs", 4: "balls", 5: "fifties", 
-        	6: "hundreds", 7: "sr", 8: "wickets", 9: "econ", 10: "best_figures"
-   	}
+    		1 : "matches" , 2 : "not_outs" , 3: "runs_scored", 4: "highest", 5: "bat_avg",
+    		6: "balls_faced", 7: "bat_sr", 8: "hundreds", 9: "fifties", 10: "balls_bowled",
+    		11: "runs_given", 12: "catches", 13: "wickets", 14: "ball_avg",15: "economy",
+    		16: "ball_sr", 17: "best_figures",18: "five_w"
+	}
 	stat_name = STAT_CHOICES[stat_num]
 	session['last_stat_choice'] = stat_num
 	session['last_stat_name'] = stat_name

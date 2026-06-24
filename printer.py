@@ -1,27 +1,53 @@
 menu = """
-┌────────────────────────────────────────┐
-│        CHOOSE YOUR BATTLE STAT         │
-├────────────────────────────────────────┤
-│  1. Rank        │   6. Hundreds        │
-│  2. Matches     │   7. Strike Rate     │
-│  3. Runs        │   8. Wickets         │
-│  4. Balls       │   9. Economy         │
-│  5. Fifties     │  10. Best Figures    │
-└────────────────────────────────────────┘
-👉 Choose a stat (1-10): """
+┌────────────────────────────────────────────┐
+│         CHOOSE YOUR BATTLE STAT            │
+├────────────────────────────────────────────┤
+│  1. Matches      │ 10. Balls Bowled        │
+│  2. Not Outs     │ 11. Runs Given          │
+│  3. Runs         │ 12. Catches             │
+│  4. High Score   │ 13. Wickets             │
+│  5. Bat Avg      │ 14. Bowl Avg            │
+│  6. Balls Faced  │ 15. Economy             │
+│  7. Strike Rate  │ 16. Bowl SR             │
+│  8. Hundreds     │ 17. Best Figures        │
+│  9. Fifties      │ 18. 5WI                 │
+└────────────────────────────────────────────┘
+👉 Choose a stat (1-18): """
 
 def printing(curr_player1):
-	print("=" * 40)
-	print(f" CARD NO. {curr_player1["id"]} | {curr_player1["name"]}")
-	print("=" * 40)
-	print(f" Matches Played : {curr_player1["matches"]}")
-	print(f" Runs Scored   : {curr_player1["runs"]}")
-	print(f" Balls Faced   : {curr_player1["balls"]}")
-	print(f" 50s / 100s    : {curr_player1["fifties"]} / {curr_player1["hundreds"]}")
-	print(f" Strike Rate   : {curr_player1["sr"]}")
-	print(f" Wickets       : {curr_player1["wickets"]}")
-	print(f" Economy Rate  : {curr_player1["econ"]}")
-	print(f" Best Figures  : {curr_player1["best_w"]} Wkts for {curr_player1["best_r"]} Runs")
+    labels = {
+        "matches": "Matches", "not_outs": "Not Outs", "runs_scored": "Runs", 
+        "highest": "Highest Score", "bat_avg": "Batting Avg", "balls_faced": "Balls Faced", 
+        "bat_sr": "Batting SR", "hundreds": "100s", "fifties": "50s", 
+        "balls_bowled": "Balls Bowled", "runs_given": "Runs Given", "catches": "Catches", 
+        "wickets": "Wickets", "ball_avg": "Bowling Avg", "economy": "Economy", 
+        "ball_sr": "Bowling SR", "best_figures": "Best Figures", "five_w": "5 Wickets"
+    }
+
+    left_keys = ["matches", "not_outs", "runs_scored", "highest", "bat_avg", "balls_faced", "bat_sr", "hundreds", "fifties"]
+    right_keys = ["balls_bowled", "runs_given", "catches", "wickets", "ball_avg", "economy", "ball_sr", "best_figures", "five_w"]
+
+    print("=" * 68)
+    print(f" {curr_player1['name'].upper()}")
+    print("=" * 68)
+
+    for l_key, r_key in zip(left_keys, right_keys):
+        l_label = labels[l_key]
+        l_val = curr_player1.get(l_key, "-")
+        left_side = f"{l_label}: {l_val}"
+
+        r_label = labels[r_key]
+        if r_key == "best_figures":
+            w = curr_player1.get("best_w", 0)
+            r = curr_player1.get("best_r", 0)
+            right_side = f"{r_label}: {w}/{r}"
+        else:
+            r_val = curr_player1.get(r_key, "-")
+            right_side = f"{r_label}: {r_val}"
+
+        print(f" {left_side:<34} | {right_side}")
+        
+    print("=" * 68)
 
 def print_menu():
 	print(menu)

@@ -324,27 +324,6 @@ Choose a stat to battle
 <input
 type="submit"
 name="stat_choice"
-value="rank">
-
-<div class="stat-title">
-Rank
-</div>
-
-<div class="stat-value">
-{{player_card.rank}}
-</div>
-
-</label>
-
-
-
-
-
-<label class="stat">
-
-<input
-type="submit"
-name="stat_choice"
 value="matches">
 
 <div class="stat-title">
@@ -366,14 +345,77 @@ Matches
 <input
 type="submit"
 name="stat_choice"
-value="runs">
+value="balls_bowled">
+
+<div class="stat-title">
+Balls bowled
+</div>
+
+<div class="stat-value">
+{{player_card.balls_bowled}}
+</div>
+
+</label>
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="not_outs">
+
+<div class="stat-title">
+Not Outs
+</div>
+
+<div class="stat-value">
+{{player_card.not_outs}}
+</div>
+
+</label>
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="runs_given">
+
+<div class="stat-title">
+Runs Given
+</div>
+
+<div class="stat-value">
+{{player_card.runs_given}}
+</div>
+
+</label>
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="runs_scored">
 
 <div class="stat-title">
 Runs
 </div>
 
 <div class="stat-value">
-{{player_card.runs}}
+{{player_card.runs_scored}}
 </div>
 
 </label>
@@ -387,14 +429,14 @@ Runs
 <input
 type="submit"
 name="stat_choice"
-value="balls">
+value="catches">
 
 <div class="stat-title">
-Balls
+Catches
 </div>
 
 <div class="stat-value">
-{{player_card.balls}}
+{{player_card.catches}}
 </div>
 
 </label>
@@ -408,56 +450,14 @@ Balls
 <input
 type="submit"
 name="stat_choice"
-value="fifties">
+value="highest">
 
 <div class="stat-title">
-50s
+High Score
 </div>
 
 <div class="stat-value">
-{{player_card.fifties}}
-</div>
-
-</label>
-
-
-
-
-
-<label class="stat">
-
-<input
-type="submit"
-name="stat_choice"
-value="hundreds">
-
-<div class="stat-title">
-100s
-</div>
-
-<div class="stat-value">
-{{player_card.hundreds}}
-</div>
-
-</label>
-
-
-
-
-
-<label class="stat">
-
-<input
-type="submit"
-name="stat_choice"
-value="sr">
-
-<div class="stat-title">
-Strike Rate
-</div>
-
-<div class="stat-value">
-{{player_card.sr}}
+{{player_card.highest}}
 </div>
 
 </label>
@@ -492,20 +492,165 @@ Wickets
 <input
 type="submit"
 name="stat_choice"
-value="econ">
+value="bat_avg">
 
 <div class="stat-title">
-Economy
+Batting Avg
 </div>
 
 <div class="stat-value">
-{{player_card.econ}}
+{{player_card.bat_avg}}
 </div>
 
 </label>
 
 
 
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="ball_avg">
+
+<div class="stat-title">
+Bowl Avg
+</div>
+
+<div class="stat-value">
+{{player_card.ball_avg}}
+</div>
+
+</label>
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="balls_faced">
+
+<div class="stat-title">
+Balls
+</div>
+
+<div class="stat-value">
+{{player_card.balls_faced}}
+</div>
+
+</label>
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="economy">
+
+<div class="stat-title">
+Economy
+</div>
+
+<div class="stat-value">
+{{player_card.economy}}
+</div>
+
+</label>
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="bat_sr">
+
+<div class="stat-title">
+Strike Rate
+</div>
+
+<div class="stat-value">
+{{player_card.bat_sr}}
+</div>
+
+</label>
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="ball_sr">
+
+<div class="stat-title">
+Bowl Sr
+</div>
+
+<div class="stat-value">
+{{player_card.ball_sr}}
+</div>
+
+</label>
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="hundreds">
+
+<div class="stat-title">
+Hundreds
+</div>
+
+<div class="stat-value">
+{{player_card.hundreds}}
+</div>
+
+</label>
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="five_w">
+
+<div class="stat-title">
+5wi
+</div>
+
+<div class="stat-value">
+{{player_card.five_w}}
+</div>
+
+</label>
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="fifties">
+
+<div class="stat-title">
+Fifties
+</div>
+
+<div class="stat-value">
+{{player_card.fifties}}
+</div>
+
+</label>
 
 
 <label class="stat">
@@ -516,7 +661,7 @@ name="stat_choice"
 value="best_figures">
 
 <div class="stat-title">
-Best
+Best Figures
 </div>
 
 <div class="stat-value">
@@ -524,7 +669,6 @@ Best
 </div>
 
 </label>
-
 
 
 
