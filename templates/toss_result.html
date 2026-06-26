@@ -96,22 +96,59 @@
     a {
         text-decoration: none;
     }
+
+    /* Toss Animation, kinda goofy but works */
+    .coin-anim {
+        font-size: 8rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        transform: translate(-50%, -50%);
+        animation: flipCoin 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        z-index: 50;
+    }
+
+    @keyframes flipCoin {
+        0% { transform: translate(-50%, -50%) rotateY(0deg) scale(1); opacity: 1; }
+        40% { transform: translate(-50%, -200%) rotateY(1440deg) scale(1.5); opacity: 1; }
+        85% { transform: translate(-50%, -50%) rotateY(2880deg) scale(1); opacity: 1; }
+        100% { transform: translate(-50%, -50%) rotateY(2880deg) scale(1); opacity: 0; visibility: hidden; }
+    }
+
+    .result-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0;
+        animation: revealResult 0.5s ease forwards;
+        animation-delay: 1.8s; /* waits for coin to finish */
+    }
+
+    @keyframes revealResult {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
     </style>
 </head>
 
 <body>
+    
+    <div class="coin-anim">🪙</div>
 
-    {% if won == 1 %}
-        <div class="result">You won the Toss!</div>
-        <p>You will go first!</p>
-    {% else %}
-        <div class="result">You lost the Toss</div>
-        <p>Computer will go first</p>
-    {% endif %}
+    <div class="result-container">
+        {% if won == 1 %}
+            <div class="result">You won the Toss!</div>
+            <p>You will go first!</p>
+        {% else %}
+            <div class="result">You lost the Toss</div>
+            <p>Computer will go first</p>
+        {% endif %}
 
-    <a href="/setup">
-        <button class="btn">Continue to the game</button>
-    </a>
+        <a href="/setup">
+            <button class="btn">Continue to the game</button>
+        </a>
+    </div>
 
 </body>
 </html>

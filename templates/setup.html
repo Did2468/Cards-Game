@@ -43,6 +43,14 @@
 
         box-shadow:
             0 10px 30px rgba(0,0,0,0.12);
+
+        animation: slideUp 0.5s ease forwards;
+        opacity: 0;
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
 
     h1 {
