@@ -280,7 +280,88 @@ a {
 
 }
 
+/* Card animations, later thinking of adding deck like UNO */
+.player-card {
+    animation: slideInLeft 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+}
 
+@keyframes slideInLeft {
+    from { transform: translateX(-30px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Flip Animation */
+.ai-flip-container {
+    perspective: 2000px;
+    z-index: 10;
+}
+
+.flip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: rotateY(180deg);
+    animation: flipCard 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation-delay: 0.8s;
+}
+
+@keyframes flipCard {
+    to { transform: rotateY(0deg); }
+}
+
+.flip-back {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.flip-front {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    border-radius: 18px;
+    border: 4px solid #e0b52c;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    box-shadow: 0 12px 25px rgba(0,0,0,.3);
+}
+
+.result, .choice, button {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scoreboard */
+.scoreboard {
+    position: fixed;
+    bottom: 0; left: 0; width: 100%;
+    background: #1b5e20;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px;
+    font-weight: 800;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+.score-badge {
+    background: #e0b52c;
+    color: #222;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 1.1rem;
+}
 </style>
 
 </head>
@@ -288,6 +369,11 @@ a {
 
 <body>
 
+<!-- Scoreboard -->
+<div class="scoreboard">
+    <div>YOU: <span class="score-badge">{{ player_deck_size }}</span></div>
+    <div>AI: <span class="score-badge">{{ ai_deck_size }}</span></div>
+</div>
 
 <div class="container">
 
@@ -443,9 +529,7 @@ chosen:
 </div>
 
 
-<div class="cards-left">
-Cards Left: {{player_deck_size}}
-</div>
+
 
 
 </div>
@@ -458,9 +542,16 @@ Cards Left: {{player_deck_size}}
 
 <!-- AI CARD -->
 
+<div class="ai-flip-container">
+<div class="flip-inner">
 
-<div class="card ai-card">
+<div class="flip-front">
+    <div style="font-size: 3.5rem; margin-bottom: 10px;">🏏</div>
+    <div style="color: white; font-weight: 800; font-size: 1.3rem; letter-spacing: 2px;">OPPONENT</div>
+    <div style="color: #ffe082; font-size: 1rem; margin-top: 5px; font-weight: bold;">CARD</div>
+</div>
 
+<div class="flip-back card ai-card">
 
 <div class="card-title">
 
@@ -583,14 +674,12 @@ Cards Left: {{player_deck_size}}
 
 
 
-<div class="cards-left">
-
-Cards Left: {{ai_deck_size}}
-
-</div>
 
 
-</div>
+
+</div> <!-- End flip-back -->
+</div> <!-- End flip-inner -->
+</div> <!-- End ai-flip-container -->
 
 
 

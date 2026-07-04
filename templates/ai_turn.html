@@ -40,7 +40,13 @@ body {
     max-width:340px;
 
     text-align:center;
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+}
 
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 
@@ -234,16 +240,39 @@ button:active {
 
 }
 
-
-
+/* Might change it to google prediction like visuals later */
+.scoreboard {
+    position: fixed;
+    bottom: 0; left: 0; width: 100%;
+    background: #1b5e20;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px;
+    font-weight: 800;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+.score-badge {
+    background: #e0b52c;
+    color: #222;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 1.1rem;
+}
 </style>
 
 </head>
 
 
-
 <body>
 
+<!-- Scoreboard -->
+<div class="scoreboard">
+    <div>YOU: <span class="score-badge">{{ cards_left }}</span></div>
+    <div>AI: <span class="score-badge">{{ ai_cards_left }}</span></div>
+</div>
 
 <div class="container">
 
@@ -252,9 +281,7 @@ button:active {
 <div class="header">
 
 
-<div class="deck-info">
-Your Cards: {{cards_left}}
-</div>
+
 
 
 <p>

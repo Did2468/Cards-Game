@@ -65,9 +65,9 @@ def play():
 	ai_card = cards[ai_card_id]
 	
 	if(turn==1):
-		return render_template('player_turn.html',player_card=player_card,cards_left=len(player_deck))
+		return render_template('player_turn.html',player_card=player_card,cards_left=len(player_deck), ai_cards_left=len(ai_deck))
 	else:
-		return render_template('ai_turn.html',player_card=player_card,cards_left=len(player_deck))
+		return render_template('ai_turn.html',player_card=player_card,cards_left=len(player_deck), ai_cards_left=len(ai_deck))
 
 @app.route("/player_choice",methods=["POST"])
 def player_choice():

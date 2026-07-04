@@ -103,38 +103,7 @@ body {
 
 
 
-/* info */
-
-
-.info {
-
-    display:flex;
-
-    justify-content:center;
-
-    gap:8px;
-
-    padding:10px;
-
-}
-
-
-
-.badge {
-
-    background:#e8f5e9;
-
-    padding:5px 10px;
-
-    border-radius:20px;
-
-    color:#1b5e20;
-
-    font-size:.75rem;
-
-    font-weight:bold;
-
-}
+/* info removed for scoreboard */
 
 
 
@@ -249,8 +218,6 @@ input[type="submit"] {
 
 
 
-/* footer */
-
 
 .footer {
 
@@ -264,7 +231,27 @@ input[type="submit"] {
 
 }
 
-
+/* Scoreboard & Visual Decks */
+.scoreboard {
+    position: fixed;
+    bottom: 0; left: 0; width: 100%;
+    background: #1b5e20;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px;
+    font-weight: 800;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+.score-badge {
+    background: #e0b52c;
+    color: #222;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 1.1rem;
+}
 </style>
 
 </head>
@@ -272,6 +259,11 @@ input[type="submit"] {
 
 <body>
 
+<!-- Scoreboard -->
+<div class="scoreboard">
+    <div>YOU: <span class="score-badge">{{ cards_left }}</span></div>
+    <div>AI: <span class="score-badge">{{ ai_cards_left }}</span></div>
+</div>
 
 <div class="card">
 
@@ -289,18 +281,7 @@ input[type="submit"] {
 
 
 
-<div class="info">
 
-<div class="badge">
-You: {{cards_left}}
-</div>
-
-
-<div class="badge">
-AI: {{ai_cards_left}}
-</div>
-
-</div>
 
 
 
