@@ -8,11 +8,8 @@ import os
 app = Flask(__name__)
 app.secret_key = "Passwordis2468"
 
-with open('player_stats.json','r') as file:
-	players_list = json.load(file)
-
-cards = {player["id"]: player for player in players_list}
-
+#Declaring the cards here and updating it accordingly during the game setup.i know its nit very effecient but works for now 
+cards = []
 #Home page 
 @app.route("/")
 def home():
@@ -27,9 +24,11 @@ def toss_page():
 #toss processing
 @app.route("/toss_result",methods=["POST"])
 def toss_result():
+	global cards
 	user_choice = int(request.form['choice'])
+	deck_theme = request.form['deck_theme']
+	cards = game_setup.theme_selector(deck_theme)
 	result = game_setup.toss_logic(user_choice)
-	
 	session['turn'] = result
 	return render_template('toss_result.html',won=result)
 
@@ -148,3 +147,4 @@ def game_over():
 if __name__=="__main__":
 	port = int(os.environ.get('PORT', 5000))
 	app.run(host='0.0.0.0', port=port)
+#	app.run(debug=True)

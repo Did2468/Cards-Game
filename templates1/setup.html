@@ -32,6 +32,12 @@
 	<p>How many cards do u want to play with?</p>
 	<p>(Maximum: {{max_cards}})</p>
 	<form method="POST" action="/start_game">
+		<select name="deck_type">
+			<option value="odi">Odi Deck</option>
+			<option value="t20">T20 Deck</option>
+			<option value="test">Test Deck</option>
+			<option value="ipl">IPL Deck</option>
+		</select>
 		<input type="number" name="num_cards" min="2" max="{{max_cards}}" value="10")>
 		<br>
 		<button type="submit" class="btn">Start Game!</button>
