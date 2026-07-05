@@ -58,3 +58,13 @@ def theme_selector(theme):
 			cards = {player["id"]: player for player in players_list}
 		
 		return cards
+
+def choose_ai_ultimate_team(player1,card_len):
+		player2 = []
+		while(len(player2)!=12):
+			x = random.randint(1,card_len)
+			if(x in player1) or (x in player2):
+				continue
+			else:
+				player2.append(x)
+		return player2

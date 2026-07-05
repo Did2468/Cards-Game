@@ -32,6 +32,27 @@ def toss_result():
 	session['turn'] = result
 	return render_template('toss_result.html',won=result)
 
+#deck support added ultimate team like thingy
+@app.route("/ultimate_team",methods=["POST","GET"])
+def setup_ultimate_team():
+	global cards
+	with open('ipl_stats.json','r') as file:
+		players_list = json.load(file)
+	cards = {player["id"]:player for player in players_list}
+	return render_template('ultimate-team.html',cards=cards)
+
+#ultimate team start_game_ultimate
+@app.route("/start_game_ultimate",methods=["POST","GET"])
+def start_game_ultimate():
+	global cards
+	raw_player_deck = request.form.getlist('player_ids')
+	player1 = [int(p_id)for p_id in raw_player_deck if p_id.strip().isdigit()]
+	player2 = game_setup.choose_ai_ultimate_team(player1,len(cards))
+	session['player_deck'] = player1
+	session['ai_deck'] = player2
+	session['turn'] = 1
+	return redirect('/play')
+
 # cards setup page
 @app.route("/setup")
 def setup_page():
@@ -148,3 +169,4 @@ if __name__=="__main__":
 	port = int(os.environ.get('PORT', 5000))
 	app.run(host='0.0.0.0', port=port)
 #	app.run(debug=True)
+
