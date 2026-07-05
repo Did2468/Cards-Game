@@ -17,7 +17,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+    /* Sky + Grass */
     background:
         linear-gradient(
             to bottom,
@@ -31,11 +34,16 @@ body {
 .container {
     width: 90%;
     max-width: 550px;
+
     background: rgba(255,255,255,0.95);
-    padding: 40px;
+
+    padding: 50px;
     border-radius: 18px;
+
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.12);
 }
 
 .logo {
@@ -53,23 +61,24 @@ p {
     color: #666;
     font-size: 1.05rem;
     line-height: 1.6;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
 }
 
 .btn {
-    display: block;
-    width: 100%;
+    display: inline-block;
+
     background: #2e7d32;
     color: white;
+
     text-decoration: none;
     font-size: 1.1rem;
     font-weight: 600;
-    padding: 14px;
+
+    padding: 15px 35px;
+
     border-radius: 10px;
+
     transition: all 0.2s ease;
-    margin-bottom: 15px;
-    border: none;
-    cursor: pointer;
 }
 
 .btn:hover {
@@ -79,45 +88,6 @@ p {
 
 .btn:active {
     transform: translateY(0);
-}
-
-.btn-secondary {
-    background: #1f3d21;
-}
-
-.divider {
-    margin: 15px 0;
-    color: #777;
-    font-weight: 700;
-    font-size: 0.95rem;
-}
-
-.join-container {
-    display: flex;
-    gap: 10px;
-    margin-top: 5px;
-}
-
-.code-input {
-    flex: 1;
-    padding: 12px;
-    font-size: 1.1rem;
-    border: 2px solid #cce3ce;
-    border-radius: 10px;
-    text-transform: uppercase;
-    text-align: center;
-    font-weight: 700;
-    outline: none;
-}
-
-.code-input:focus {
-    border-color: #2e7d32;
-}
-
-.join-btn {
-    width: auto;
-    margin-bottom: 0;
-    padding: 12px 25px;
 }
 
 .footer {
@@ -136,25 +106,19 @@ p {
     <h1>Cricket Card Battle</h1>
 
     <p>
-        Relive your childhood nostalgia online.<br>
-        Multiplayer Cricket Card Battler.
+        Relive Your childhood nostalgia now online.
+        Online Cricket Card Battler.
     </p>
 
-    <a href="/ultimate_team?role=p1" class="btn">Create Online Room</a>
-
-    <div class="divider">OR</div>
-
-    <form action="/ultimate_team" method="GET" class="join-container">
-        <input type="hidden" name="role" value="p2">
-        <input type="text" name="room_code" class="code-input" placeholder="ENTER ROOM CODE" maxlength="4" required autocomplete="off">
-        <button type="submit" class="btn join-btn">Join Room</button>
-    </form>
-
-    <div class="divider">─ Local Game ─</div>
-    <a href="/toss" class="btn btn-secondary">Play vs Computer (Classic)</a>
+    <a href="/toss" class="btn">
+        Play vs Computer
+    </a>
+    <a href="/ultimate_team" class="btn">
+       Deck building
+    </a>
 
     <div class="footer">
-        Multiplayer Enabled Engine
+        Single Player Mode
     </div>
 </div>
 

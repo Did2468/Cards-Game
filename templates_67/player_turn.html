@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Your Turn</title>
+
+<style>
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+body {
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-family:"Segoe UI", sans-serif;
+
+    background:#3f8f4f;
+
+    padding:10px;
+
+    overflow-x:hidden;
+}
+
+
+/* card */
+
+.card {
+
+    width:100%;
+    max-width:340px;
+
+    background:#fffdf5;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 12px 25px rgba(0,0,0,.3);
+
+    border:3px solid #e0b52c;
+
+    animation:appear .25s ease;
+
+}
+
+
+@keyframes appear {
+
+    from {
+        transform:scale(.95);
+        opacity:0;
+    }
+
+    to {
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+
+/* header */
+
+
+.card-header {
+
+    background:#1b5e20;
+
+    color:white;
+
+    padding:14px;
+
+    text-align:center;
+
+}
+
+
+.card-header h1 {
+
+    font-size:1.35rem;
+
+}
+
+
+.player-name {
+
+    margin-top:5px;
+
+    font-size:1.15rem;
+
+    font-weight:700;
+
+}
+
+
+
+/* info removed for scoreboard */
+
+
+
+.subtitle {
+
+    text-align:center;
+
+    color:#666;
+
+    font-size:.85rem;
+
+    margin-bottom:8px;
+
+}
+
+
+
+/* stats grid */
+
+
+form {
+
+    padding:10px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap:8px;
+
+}
+
+
+
+.stat {
+
+    background:#f3f5f3;
+
+    border-radius:10px;
+
+    padding:8px;
+
+    cursor:pointer;
+
+    text-align:center;
+
+    border:2px solid transparent;
+
+    transition:.15s ease;
+
+    user-select:none;
+
+    min-width:0;
+
+}
+
+
+
+/* clickable animation */
+
+.stat:hover {
+
+    transform:scale(1.03);
+
+    background:#e8f5e9;
+
+    border-color:#2e7d32;
+
+    box-shadow:
+        0 5px 12px rgba(46,125,50,.2);
+
+}
+
+
+.stat:active {
+
+    transform:scale(.98);
+
+}
+
+
+
+input[type="submit"] {
+
+    display:none;
+
+}
+
+
+
+.stat-title {
+
+    font-size:.65rem;
+
+    color:#777;
+
+}
+
+
+.stat-value {
+
+    font-size:.95rem;
+
+    font-weight:800;
+
+    color:#222;
+
+    overflow:hidden;
+
+}
+
+
+
+
+.footer {
+
+    text-align:center;
+
+    padding-bottom:10px;
+
+    color:#888;
+
+    font-size:.7rem;
+
+}
+
+/* Scoreboard & Visual Decks */
+.scoreboard {
+    position: fixed;
+    bottom: 0; left: 0; width: 100%;
+    background: #1b5e20;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px;
+    font-weight: 800;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+.score-badge {
+    background: #e0b52c;
+    color: #222;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 1.1rem;
+}
+</style>
+
+</head>
+
+
+<body>
+
+<!-- Scoreboard -->
+<div class="scoreboard">
+    <div>YOU: <span class="score-badge">{{ cards_left }}</span></div>
+    <div>AI: <span class="score-badge">{{ ai_cards_left }}</span></div>
+</div>
+
+<div class="card">
+
+
+<div class="card-header">
+
+<h1>🏏 Your Card</h1>
+
+<div class="player-name">
+{{player_card.name}}
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<p class="subtitle">
+Choose a stat to battle
+</p>
+
+
+
+
+
+<form method="POST" action="/player_choice">
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="matches">
+
+<div class="stat-title">
+Matches
+</div>
+
+<div class="stat-value">
+{{player_card.matches}}
+</div>
+
+</label>
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="balls_bowled">
+
+<div class="stat-title">
+Balls bowled
+</div>
+
+<div class="stat-value">
+{{player_card.balls_bowled}}
+</div>
+
+</label>
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="not_outs">
+
+<div class="stat-title">
+Not Outs
+</div>
+
+<div class="stat-value">
+{{player_card.not_outs}}
+</div>
+
+</label>
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="runs_given">
+
+<div class="stat-title">
+Runs Given
+</div>
+
+<div class="stat-value">
+{{player_card.runs_given}}
+</div>
+
+</label>
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="runs_scored">
+
+<div class="stat-title">
+Runs
+</div>
+
+<div class="stat-value">
+{{player_card.runs_scored}}
+</div>
+
+</label>
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="catches">
+
+<div class="stat-title">
+Catches
+</div>
+
+<div class="stat-value">
+{{player_card.catches}}
+</div>
+
+</label>
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="highest">
+
+<div class="stat-title">
+High Score
+</div>
+
+<div class="stat-value">
+{{player_card.highest}}
+</div>
+
+</label>
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="wickets">
+
+<div class="stat-title">
+Wickets
+</div>
+
+<div class="stat-value">
+{{player_card.wickets}}
+</div>
+
+</label>
+
+
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="bat_avg">
+
+<div class="stat-title">
+Batting Avg
+</div>
+
+<div class="stat-value">
+{{player_card.bat_avg}}
+</div>
+
+</label>
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="ball_avg">
+
+<div class="stat-title">
+Bowl Avg
+</div>
+
+<div class="stat-value">
+{{player_card.ball_avg}}
+</div>
+
+</label>
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="balls_faced">
+
+<div class="stat-title">
+Balls
+</div>
+
+<div class="stat-value">
+{{player_card.balls_faced}}
+</div>
+
+</label>
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="economy">
+
+<div class="stat-title">
+Economy
+</div>
+
+<div class="stat-value">
+{{player_card.economy}}
+</div>
+
+</label>
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="bat_sr">
+
+<div class="stat-title">
+Strike Rate
+</div>
+
+<div class="stat-value">
+{{player_card.bat_sr}}
+</div>
+
+</label>
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="ball_sr">
+
+<div class="stat-title">
+Bowl Sr
+</div>
+
+<div class="stat-value">
+{{player_card.ball_sr}}
+</div>
+
+</label>
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="hundreds">
+
+<div class="stat-title">
+Hundreds
+</div>
+
+<div class="stat-value">
+{{player_card.hundreds}}
+</div>
+
+</label>
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="five_w">
+
+<div class="stat-title">
+5wi
+</div>
+
+<div class="stat-value">
+{{player_card.five_w}}
+</div>
+
+</label>
+
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="fifties">
+
+<div class="stat-title">
+Fifties
+</div>
+
+<div class="stat-value">
+{{player_card.fifties}}
+</div>
+
+</label>
+
+
+<label class="stat">
+
+<input
+type="submit"
+name="stat_choice"
+value="best_figures">
+
+<div class="stat-title">
+Best Figures
+</div>
+
+<div class="stat-value">
+{{player_card.best_w}}/{{player_card.best_r}}
+</div>
+
+</label>
+
+
+
+</form>
+
+
+
+
+<div class="footer">
+
+Tap a stat to play
+
+</div>
+
+
+
+</div>
+
+
+</body>
+</html>
