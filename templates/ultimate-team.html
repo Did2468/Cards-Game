@@ -36,21 +36,12 @@
         font-size: 2.5rem;
         font-weight: 800;
         text-align: center;
-        margin-bottom: 10px;
-        color: #1f3d21;
-    }
-
-    .role-badge {
-        background: #1f3d21;
-        color: #fff;
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 0.95rem;
-        font-weight: 600;
         margin-bottom: 30px;
-        letter-spacing: 0.5px;
+        color: #1f3d21;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
+    /* 12-Card Grid Layout */
     .squad-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -60,6 +51,7 @@
         justify-content: center;
     }
 
+    /* Fifa Ultimate Team Shield Design */
     .fifa-card {
         background: linear-gradient(135deg, #ffe066 0%, #f5b041 50%, #d35400 100%);
         border: 4px solid #2c3e50;
@@ -92,6 +84,7 @@
         border-radius: 20px;
     }
 
+    /* Dynamic Placeholder Silhouette Icon */
     .player-avatar {
         font-size: 4.5rem;
         color: #2c3e50;
@@ -99,6 +92,7 @@
         margin-bottom: 10px;
     }
 
+    /* Target Text Overlay Element inside the Card */
     .selected-display-name {
         font-size: 1.05rem;
         font-weight: 700;
@@ -112,6 +106,7 @@
         padding: 0 5px;
     }
 
+    /* Search Dropdown / Input Box Optimization */
     .player-search-input {
         width: 100%;
         padding: 10px 12px;
@@ -126,6 +121,7 @@
         transition: all 0.2s ease;
     }
 
+    /* Dark Mode Styling for Search Input Dropdown Components */
     .player-search-input::placeholder {
         color: #bdc3c7;
     }
@@ -136,6 +132,7 @@
         box-shadow: 0 0 10px rgba(255, 224, 102, 0.5);
     }
 
+    /* Submitting Action Elements */
     .btn {
         background: #2e7d32;
         color: white;
@@ -153,30 +150,31 @@
         background: #1b5e20;
         transform: translateY(-2px);
     }
+
+    .btn:active {
+        transform: translateY(0);
+    }
     </style>
 </head>
 <body>
 
     <div class="form-container">
         <h2>Build Your Ultimate 12 Squad</h2>
-        <div class="role-badge">
-            {% if role == 'p2' %} Joining Room: {{ room_code }} {% else %} Creating New Game Room {% endif %}
-        </div>
 
-        {% if role == 'p2' %}
-            <form action="/join_room" method="POST" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-                <input type="hidden" name="room_code" value="{{ room_code }}">
-        {% else %}
-            <form action="/start_game_ultimate" method="POST" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-        {% endif %}
+        <!-- Form forwards payload data directly to your designated processing route -->
+        <form action="/start_game_ultimate" method="POST" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
             
             <div class="squad-grid">
                 {% for i in range(1, 13) %}
                 <div class="fifa-card">
-                    <div class="card-badge-header">SLOT {{ i }}</div>
+                    <div class="card-badge-header">POS {{ i }}</div>
+                    
                     <div class="player-avatar" id="avatar-{{ i }}">👤</div>
+                    
+                    <!-- Dynamic Text Node updating upon valid dropdown choice -->
                     <div class="selected-display-name" id="display-name-{{ i }}">Empty Slot</div>
 
+                    <!-- Filter Input with Custom Colored Focus Styles -->
                     <input type="text" 
                            id="search-{{ i }}"
                            class="player-search-input" 
@@ -185,15 +183,17 @@
                            autocomplete="off"
                            oninput="updatePlayerCard(this, {{ i }})">
                     
+                    <!-- Hidden input collecting the final integer index token -->
                     <input type="hidden" id="hidden-id-{{ i }}" name="player_ids">
                 </div>
                 {% endfor %}
             </div>
 
-            <button type="submit" class="btn">Lock In Squad</button>
+            <button type="submit" class="btn">Confirm & Launch Game</button>
         </form>
     </div>
 
+    <!-- Central Dataset Store mapped from your global template dictionary -->
     <datalist id="players-datalist">
         {% for player_id, player in cards.items() %}
             <option data-id="{{ player_id }}" value="{{ player.name }} — {{ player.team }}">
@@ -207,12 +207,13 @@
         const textDisplay = document.getElementById(`display-name-${slotIndex}`);
         const avatar = document.getElementById(`avatar-${slotIndex}`);
         
+        // Check if query entry exactly reflects one option mapping
         const option = dataList.querySelector(`option[value="${inputElement.value}"]`);
         
         if (option) {
             hiddenInput.value = option.dataset.id;
-            textDisplay.innerText = inputElement.value;
-            avatar.innerText = "🔥";
+            textDisplay.innerText = inputElement.value; // Show player name and team on card
+            avatar.innerText = "🔥"; // Give selected players a glowing match state appearance
             avatar.style.opacity = "1";
         } else {
             hiddenInput.value = "";
