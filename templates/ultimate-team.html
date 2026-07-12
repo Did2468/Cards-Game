@@ -4,224 +4,502 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultimate Team Selection</title>
-
     <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    body {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        font-family: "Segoe UI", sans-serif;
-        background: linear-gradient(to bottom, #dff2ff 0%, #dff2ff 30%, #67b85f 30%, #5ba854 100%);
-        color: #222;
-        padding: 40px 20px;
-    }
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
 
-    .form-container {
-        width: 100%;
-        max-width: 1200px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+        /* Abstract Premium Background */
+        .bg-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(103, 184, 95, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+        }
 
-    h2 {
-        font-size: 2.5rem;
-        font-weight: 800;
-        text-align: center;
-        margin-bottom: 30px;
-        color: #1f3d21;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+        header {
+            margin-top: 40px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
 
-    /* 12-Card Grid Layout */
-    .squad-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 25px;
-        width: 100%;
-        margin-bottom: 40px;
-        justify-content: center;
-    }
+        h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, #67b85f, #f4c542);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
 
-    /* Fifa Ultimate Team Shield Design */
-    .fifa-card {
-        background: linear-gradient(135deg, #ffe066 0%, #f5b041 50%, #d35400 100%);
-        border: 4px solid #2c3e50;
-        border-radius: 15px 15px 50% 50% / 15px 15px 25% 25%;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        position: relative;
-        height: 310px;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
+        .subtitle {
+            color: #8892b0;
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
 
-    .fifa-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 25px rgba(0,0,0,0.4);
-    }
+        /* Abstract Grid Layout */
+        .squad-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            width: 100%;
+            max-width: 1100px;
+            padding: 0 20px;
+            margin-bottom: 50px;
+        }
 
-    .card-badge-header {
-        font-size: 1.1rem;
-        font-weight: 800;
-        color: #2c3e50;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 15px;
-        background: rgba(255, 255, 255, 0.4);
-        padding: 2px 10px;
-        border-radius: 20px;
-    }
+        /* Empty Slot Style */
+        .slot {
+            height: 310px;
+            background: rgba(30, 41, 59, 0.4);
+            border: 2px dashed #475569;
+            border-radius: 15px 15px 50% 50% / 15px 15px 20% 20%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
 
-    /* Dynamic Placeholder Silhouette Icon */
-    .player-avatar {
-        font-size: 4.5rem;
-        color: #2c3e50;
-        opacity: 0.85;
-        margin-bottom: 10px;
-    }
+        .slot:hover {
+            border-color: #67b85f;
+            background: rgba(103, 184, 95, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(103, 184, 95, 0.2);
+        }
 
-    /* Target Text Overlay Element inside the Card */
-    .selected-display-name {
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: #fff;
-        text-align: center;
-        min-height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-        padding: 0 5px;
-    }
+        .slot-plus {
+            font-size: 3rem;
+            color: #475569;
+            transition: color 0.3s ease;
+        }
 
-    /* Search Dropdown / Input Box Optimization */
-    .player-search-input {
-        width: 100%;
-        padding: 10px 12px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        border: 2px solid #2c3e50;
-        border-radius: 8px;
-        background: #2c3e50;
-        color: #fff;
-        outline: none;
-        text-align: center;
-        transition: all 0.2s ease;
-    }
+        .slot:hover .slot-plus {
+            color: #67b85f;
+        }
 
-    /* Dark Mode Styling for Search Input Dropdown Components */
-    .player-search-input::placeholder {
-        color: #bdc3c7;
-    }
+        /* Filled Premium Card Style */
+        .slot.filled {
+            border: none;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            box-shadow: 
+                0 0 0 2px #f4c542,
+                0 15px 35px rgba(0,0,0,0.5);
+            padding: 20px 15px 30px 15px; /* Extra padding at bottom for shield shape */
+            justify-content: space-between;
+        }
 
-    .player-search-input:focus {
-        background: #34495e;
-        border-color: #ffe066;
-        box-shadow: 0 0 10px rgba(255, 224, 102, 0.5);
-    }
+        .slot.filled:hover {
+            box-shadow: 
+                0 0 0 3px #fde047,
+                0 20px 40px rgba(244, 197, 66, 0.3);
+        }
 
-    /* Submitting Action Elements */
-    .btn {
-        background: #2e7d32;
-        color: white;
-        padding: 15px 60px;
-        font-size: 1.2rem;
-        font-weight: 700;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        box-shadow: 0 5px 15px rgba(46,125,50,0.4);
-    }
+        .card-ovr {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #f4c542;
+        }
 
-    .btn:hover {
-        background: #1b5e20;
-        transform: translateY(-2px);
-    }
+        .card-pos {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #94a3b8;
+        }
 
-    .btn:active {
-        transform: translateY(0);
-    }
+        .card-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-align: center;
+            margin-top: 40px;
+            line-height: 1.2;
+        }
+
+        .card-team {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-align: center;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px 5px;
+            width: 100%;
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px;
+        }
+
+        .stat-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-val {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #f8fafc;
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .stat-lbl {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Sidebar UI */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 400px;
+            height: 100%;
+            background: #111827;
+            border-left: 1px solid #1f2937;
+            z-index: 100;
+            transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid #1f2937;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            font-size: 1.5rem;
+            color: #f8fafc;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #f1f5f9;
+        }
+
+        .sidebar-search {
+            padding: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #67b85f;
+        }
+
+        .player-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 20px 20px 20px;
+        }
+
+        /* Custom Scrollbar for Sidebar */
+        .player-list::-webkit-scrollbar { width: 6px; }
+        .player-list::-webkit-scrollbar-track { background: #111827; }
+        .player-list::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #1f2937;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .list-item:hover {
+            background: #374151;
+            border-color: #67b85f;
+            transform: translateX(-5px);
+        }
+
+        .list-item.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-name { font-weight: 700; color: #f8fafc; font-size: 1.1rem; }
+        .item-team { font-size: 0.8rem; color: #94a3b8; margin-top: 4px; }
+        
+        .item-add {
+            color: #67b85f;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .action-bar {
+            margin-bottom: 50px;
+        }
+
+        .btn-confirm {
+            background: linear-gradient(90deg, #67b85f, #5ba854);
+            color: white;
+            padding: 18px 60px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 10px 20px rgba(103, 184, 95, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(103, 184, 95, 0.4);
+        }
+
+        .btn-confirm:disabled {
+            background: #374151;
+            box-shadow: none;
+            color: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
     </style>
 </head>
 <body>
 
-    <div class="form-container">
-        <h2>Build Your Ultimate 12 Squad</h2>
+    <div class="bg-glow"></div>
 
-        <!-- Form forwards payload data directly to your designated processing route -->
-        <form action="/start_game_ultimate" method="POST" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-            
-            <div class="squad-grid">
-                {% for i in range(1, 13) %}
-                <div class="fifa-card">
-                    <div class="card-badge-header">POS {{ i }}</div>
-                    
-                    <div class="player-avatar" id="avatar-{{ i }}">👤</div>
-                    
-                    <!-- Dynamic Text Node updating upon valid dropdown choice -->
-                    <div class="selected-display-name" id="display-name-{{ i }}">Empty Slot</div>
+    <header>
+        <h2>Draft Your Squad</h2>
+        <div class="subtitle">Select 12 players to build your Ultimate Team</div>
+    </header>
 
-                    <!-- Filter Input with Custom Colored Focus Styles -->
-                    <input type="text" 
-                           id="search-{{ i }}"
-                           class="player-search-input" 
-                           placeholder="Find Player..." 
-                           list="players-datalist" 
-                           autocomplete="off"
-                           oninput="updatePlayerCard(this, {{ i }})">
-                    
-                    <!-- Hidden input collecting the final integer index token -->
-                    <input type="hidden" id="hidden-id-{{ i }}" name="player_ids">
-                </div>
-                {% endfor %}
+    <form action="/start_game_ultimate" method="POST" id="squad-form" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        
+        <div class="squad-grid">
+            {% for i in range(1, 13) %}
+            <div class="slot" id="slot-{{ i }}" onclick="openSidebar({{ i }})">
+                <div class="slot-plus">+</div>
+                <!-- Hidden inputs to submit player IDs -->
+                <input type="hidden" id="hidden-id-{{ i }}" name="player_ids" class="squad-input">
             </div>
+            {% endfor %}
+        </div>
 
-            <button type="submit" class="btn">Confirm & Launch Game</button>
-        </form>
+        <div class="action-bar">
+            <button type="submit" class="btn-confirm" id="confirm-btn">Confirm Squad</button>
+        </div>
+    </form>
+
+    <!-- Sidebar UI -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Select Player</h3>
+            <button class="close-btn" onclick="closeSidebar()">&times;</button>
+        </div>
+        <div class="sidebar-search">
+            <input type="text" class="search-input" id="search-input" placeholder="Search player name..." onkeyup="filterSidebar()">
+        </div>
+        <div class="player-list" id="player-list">
+            {% for player_id, player in cards.items() %}
+            <div class="list-item" 
+                 data-id="{{ player_id }}" 
+                 data-name="{{ player.name|lower }}"
+                 onclick="selectPlayer(
+                    '{{ player_id }}', 
+                    '{{ player.name | replace("'", "\\'") }}', 
+                    '{{ player.get("team", "") | replace("'", "\\'") }}', 
+                    '{{ player.get("runs_scored", player.get("Runs", 0)) }}', 
+                    '{{ player.get("wickets", player.get("Wickets", 0)) }}',
+                    '{{ player.get("matches", 0) }}',
+                    '{{ player.get("bat_avg", 0) }}',
+                    '{{ player.get("bat_sr", 0) }}',
+                    '{{ player.get("economy", 0) }}'
+                 )">
+                <div class="item-info">
+                    <div class="item-name">{{ player.name }}</div>
+                    <div class="item-team">{{ player.get('team', '') }}</div>
+                </div>
+                <div class="item-add">+</div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 
-    <!-- Central Dataset Store mapped from your global template dictionary -->
-    <datalist id="players-datalist">
-        {% for player_id, player in cards.items() %}
-            <option data-id="{{ player_id }}" value="{{ player.name }} — {{ player.team }}">
-        {% endfor %}
-    </datalist>
-
     <script>
-    function updatePlayerCard(inputElement, slotIndex) {
-        const dataList = document.getElementById('players-datalist');
-        const hiddenInput = document.getElementById(`hidden-id-${slotIndex}`);
-        const textDisplay = document.getElementById(`display-name-${slotIndex}`);
-        const avatar = document.getElementById(`avatar-${slotIndex}`);
-        
-        // Check if query entry exactly reflects one option mapping
-        const option = dataList.querySelector(`option[value="${inputElement.value}"]`);
-        
-        if (option) {
-            hiddenInput.value = option.dataset.id;
-            textDisplay.innerText = inputElement.value; // Show player name and team on card
-            avatar.innerText = "🔥"; // Give selected players a glowing match state appearance
-            avatar.style.opacity = "1";
-        } else {
-            hiddenInput.value = "";
-            textDisplay.innerText = "Empty Slot";
-            avatar.innerText = "👤";
-            avatar.style.opacity = "0.85";
+        let currentSlot = 1;
+        const totalSlots = 12;
+
+        function openSidebar(slotIndex) {
+            currentSlot = slotIndex;
+            document.getElementById('sidebar').classList.add('active');
+            document.getElementById('sidebar-overlay').classList.add('active');
+            document.getElementById('search-input').value = "";
+            filterSidebar(); // Refresh list to show all, but update disabled states
+            document.getElementById('search-input').focus();
         }
-    }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('sidebar-overlay').classList.remove('active');
+        }
+
+        function filterSidebar() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const items = document.querySelectorAll('.list-item');
+            
+            // Get currently selected IDs to disable them
+            const selectedIds = [];
+            for (let i = 1; i <= totalSlots; i++) {
+                const val = document.getElementById(`hidden-id-${i}`).value;
+                if (val) selectedIds.push(val);
+            }
+
+            items.forEach(item => {
+                const name = item.getAttribute('data-name');
+                const id = item.getAttribute('data-id');
+                
+                // Check if search matches
+                if (name.includes(query)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+
+                // Check if already selected in the squad
+                if (selectedIds.includes(id)) {
+                    item.classList.add('disabled');
+                    item.querySelector('.item-add').innerText = '✓';
+                } else {
+                    item.classList.remove('disabled');
+                    item.querySelector('.item-add').innerText = '+';
+                }
+            });
+        }
+
+        function selectPlayer(id, name, team, runs, wickets, matches, avg, sr, eco) {
+            // Update the slot UI
+            const slot = document.getElementById(`slot-${currentSlot}`);
+            
+            // Transform slot into a filled premium card
+            slot.classList.add('filled');
+            slot.innerHTML = `
+                <div class="card-pos">POS ${currentSlot}</div>
+                <div class="card-name">${name}</div>
+                <div class="card-team">${team}</div>
+                <div class="card-stats-grid">
+                    <div class="stat-col"><span class="stat-val">${matches}</span><span class="stat-lbl">MAT</span></div>
+                    <div class="stat-col"><span class="stat-val">${runs}</span><span class="stat-lbl">RUN</span></div>
+                    <div class="stat-col"><span class="stat-val">${avg}</span><span class="stat-lbl">AVG</span></div>
+                    <div class="stat-col"><span class="stat-val">${wickets}</span><span class="stat-lbl">WKT</span></div>
+                    <div class="stat-col"><span class="stat-val">${eco}</span><span class="stat-lbl">ECO</span></div>
+                    <div class="stat-col"><span class="stat-val">${sr}</span><span class="stat-lbl">SR</span></div>
+                </div>
+                <input type="hidden" id="hidden-id-${currentSlot}" name="player_ids" class="squad-input" value="${id}">
+            `;
+
+            closeSidebar();
+            checkFormCompletion();
+        }
+
+        function checkFormCompletion() {
+            // Check if all slots are filled to enable the confirm button
+            /*
+            let filledCount = 0;
+            for (let i = 1; i <= totalSlots; i++) {
+                if (document.getElementById(`hidden-id-${i}`).value) filledCount++;
+            }
+            // Optional: document.getElementById('confirm-btn').disabled = (filledCount < totalSlots);
+            */
+        }
     </script>
 
 </body>

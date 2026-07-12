@@ -10,7 +10,23 @@
         box-sizing: border-box;
     }
 
-    body {
+    
+    /* Abstract Premium Background */
+    .bg-glow {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(103, 184, 95, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        pointer-events: none;
+    }
+
+body {
+    background-color: #0b0f19;
+    color: #ffffff;
         min-height: 100vh;
 
         display: flex;
@@ -19,21 +35,14 @@
 
         font-family: "Segoe UI", sans-serif;
 
-        background:
-            linear-gradient(
-                to bottom,
-                #dff2ff 0%,
-                #dff2ff 45%,
-                #67b85f 45%,
-                #5ba854 100%
-            );
+        
     }
 
     .container {
         width: 90%;
         max-width: 550px;
 
-        background: rgba(255,255,255,0.95);
+        background: rgba(30, 41, 59, 0.6);
 
         padding: 50px;
 
@@ -54,13 +63,13 @@
     }
 
     h1 {
-        color: #1f3d21;
+        color: #67b85f;
         font-size: 2.5rem;
         margin-bottom: 15px;
     }
 
     p {
-        color: #555;
+        color: #94a3b8;
         margin-bottom: 12px;
         font-size: 1.05rem;
     }
@@ -79,7 +88,9 @@
         font-size: 1.2rem;
         text-align: center;
 
-        border: 2px solid #cfd8dc;
+        border: 2px solid #475569;
+        background: #1e293b;
+        color: white;
         border-radius: 10px;
 
         margin-bottom: 25px;
@@ -121,6 +132,7 @@
 </head>
 
 <body>
+    <div class="bg-glow"></div>
 
     <div class="container">
 

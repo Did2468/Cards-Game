@@ -13,7 +13,23 @@
 }
 
 
+
+    /* Abstract Premium Background */
+    .bg-glow {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(103, 184, 95, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        pointer-events: none;
+    }
+
 body {
+    background-color: #0b0f19;
+    color: #ffffff;
 
     min-height:100vh;
 
@@ -23,11 +39,11 @@ body {
 
     font-family:"Segoe UI", sans-serif;
 
-    background:#3f8f4f;
+    
 
     padding:15px;
 
-    color:#222;
+    
 
 }
 
@@ -225,6 +241,7 @@ a {
 
 
 <body>
+    <div class="bg-glow"></div>
 
 
 <div class="container">
