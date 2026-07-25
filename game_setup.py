@@ -41,19 +41,19 @@ def distribute_logic(len_cards,card_num):
 
 def theme_selector(theme):
 		if(theme=="odi"):
-			with open('odi_stats.json','r') as file:
+			with open('data/odi_stats.json','r') as file:
 				players_list = json.load(file)
 			cards = {player["id"]: player for player in players_list}
 		elif(theme=="test"):
-			with open('test_stats.json','r') as file:
+			with open('data/test_stats.json','r') as file:
 				players_list = json.load(file)
 			cards = {player["id"]: player for player in players_list}
 		elif(theme=="t20i"):
-			with open('t20i_stats.json','r') as file:
+			with open('data/t20i_stats.json','r') as file:
 				players_list = json.load(file)
 			cards = {player["id"]: player for player in players_list}
 		elif(theme=="ipl"):
-			with open('ipl_stats.json','r') as file:
+			with open('data/ipl_stats.json','r') as file:
 				players_list = json.load(file)
 			cards = {player["id"]: player for player in players_list}
 		
