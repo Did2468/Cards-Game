@@ -13,7 +13,23 @@
 }
 
 
+
+    /* Abstract Premium Background */
+    .bg-glow {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(103, 184, 95, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        pointer-events: none;
+    }
+
 body {
+    background-color: #0b0f19;
+    color: #ffffff;
 
     min-height:100vh;
 
@@ -23,11 +39,11 @@ body {
 
     font-family:"Segoe UI", sans-serif;
 
-    background:#3f8f4f;
+    
 
     padding:20px;
 
-    color:#222;
+    
 
 }
 
@@ -38,7 +54,7 @@ body {
     width:100%;
     max-width:420px;
 
-    background:#fffdf5;
+    background: rgba(30, 41, 59, 0.6);
 
     padding:35px 25px;
 
@@ -76,7 +92,7 @@ body {
 
     font-weight:900;
 
-    color:#1b5e20;
+    color:#67b85f;
 
     margin-bottom:15px;
 
@@ -87,13 +103,13 @@ body {
 
 .message {
 
-    background:#f3f5f3;
+    background:#1e293b;
 
     padding:15px;
 
     border-radius:12px;
 
-    color:#555;
+    color:#94a3b8;
 
     margin-bottom:25px;
 
@@ -166,6 +182,7 @@ a {
 
 
 <body>
+    <div class="bg-glow"></div>
 
 
 

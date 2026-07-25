@@ -10,83 +10,218 @@
         box-sizing: border-box;
     }
 
-    body {
-        min-height: 100vh;
+    
+    /* Abstract Premium Background */
+    .bg-glow {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(103, 184, 95, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        pointer-events: none;
+    }
 
+body {
+    background-color: #0b0f19;
+    color: #ffffff;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
         font-family: "Segoe UI", sans-serif;
-
-        background:
-            linear-gradient(
-                to bottom,
-                #dff2ff 0%,
-                #dff2ff 45%,
-                #67b85f 45%,
-                #5ba854 100%
-            );
-
-        color: #222;
+        
+        
+        overflow: hidden; /* Prevents scrollbars during camera shake */
     }
 
-    .result {
-        font-size: 3rem;
+    /* 1. Stadium Dimming Overlay */
+    .overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 10;
+        animation: dimBackground 3.5s forwards;
+        pointer-events: none;
+    }
+    
+    @keyframes dimBackground {
+        0% { opacity: 0; }
+        15% { opacity: 1; }
+        75% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+
+    /* 2. Screen Shake Container */
+    .shake-container {
+        position: relative;
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* Trigger the shake exactly when the coin slams down */
+        animation: cameraShake 0.35s ease-in-out 2.85s;
+    }
+
+    @keyframes cameraShake {
+        0% { transform: translate(0, 0); }
+        20% { transform: translate(-15px, 15px); }
+        40% { transform: translate(15px, -15px); }
+        60% { transform: translate(-15px, -15px); }
+        80% { transform: translate(15px, 15px); }
+        100% { transform: translate(0, 0); }
+    }
+
+    /* 3. The Slow-Mo Matrix Coin Setup */
+    .coin-wrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        perspective: 1000px;
+        -webkit-perspective: 1000px;
+        z-index: 50;
+    }
+
+    .coin-anim {
+        width: 150px;
+        height: 150px;
+        transform-style: preserve-3d;
+        -webkit-transform-style: preserve-3d;
+        /* Custom Matrix Flip Timeline */
+        animation: matrixFlip 3s ease-in-out forwards;
+        -webkit-animation: matrixFlip 3s ease-in-out forwards;
+    }
+
+    .coin-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        border-radius: 50%;
+        background: #f4c542;
+        color: #222;
+        font-size: 5rem;
         font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Glowing neon aura */
+        box-shadow: 
+            inset 0 4px 8px rgba(255,255,255,0.6), 
+            0 0 35px rgba(244, 197, 66, 0.9);
+        border: 4px solid #fff;
+    }
 
-        background: rgba(255,255,255,0.95);
+    .coin-front {
+        transform: rotateY(0deg);
+        -webkit-transform: rotateY(0deg);
+    }
 
-        padding: 30px 40px;
+    .coin-back {
+        transform: rotateY(180deg);
+        -webkit-transform: rotateY(180deg);
+    }
 
-        border-radius: 18px;
+    /* The Matrix Slow-mo Animation Keyframes */
+    /* REMOVED opacity because Safari flattens 3D objects if opacity is animated */
+    @keyframes matrixFlip {
+        0% { 
+            transform: translate(-50%, 100%) rotateY(0deg) scale(1); 
+        }
+        20% { 
+            /* Fast shoot up */
+            transform: translate(-50%, -250%) rotateY(1080deg) scale(1.6); 
+        }
+        75% { 
+            /* Slow-mo float at peak (Matrix effect) */
+            transform: translate(-50%, -280%) rotateY(1620deg) scale(1.8); 
+        }
+        90% { 
+            /* Fast slam down */
+            transform: translate(-50%, 50%) rotateY(2880deg) scale(1.2); 
+        }
+        95% { 
+            /* Hide using scale instead of opacity to preserve 3D context */
+            transform: translate(-50%, 50%) rotateY(2880deg) scale(0); 
+            visibility: hidden; 
+        }
+        100% { 
+            transform: translate(-50%, 50%) rotateY(2880deg) scale(0); 
+            visibility: hidden; 
+        }
+    }
+    
+    @-webkit-keyframes matrixFlip {
+        0% { -webkit-transform: translate(-50%, 100%) rotateY(0deg) scale(1); }
+        20% { -webkit-transform: translate(-50%, -250%) rotateY(1080deg) scale(1.6); }
+        75% { -webkit-transform: translate(-50%, -280%) rotateY(1620deg) scale(1.8); }
+        90% { -webkit-transform: translate(-50%, 50%) rotateY(2880deg) scale(1.2); }
+        95% { -webkit-transform: translate(-50%, 50%) rotateY(2880deg) scale(0); visibility: hidden; }
+        100% { -webkit-transform: translate(-50%, 50%) rotateY(2880deg) scale(0); visibility: hidden; }
+    }
 
-        box-shadow:
-            0 10px 30px rgba(0,0,0,0.12);
-
-        margin-bottom: 20px;
-
-        color: #1f3d21;
+    /* 4. Results UI */
+    .result-box {
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: rgba(30, 41, 59, 0.6);
+        padding: 35px 50px;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        margin-bottom: 25px;
+        color: #67b85f;
         text-align: center;
+        position: relative;
+    }
+
+    .result-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0;
+        /* Wait for slam down, then reveal */
+        animation: revealResult 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        animation-delay: 2.85s; 
+    }
+
+    @keyframes revealResult {
+        from { opacity: 0; transform: translateY(60px) scale(0.8); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     p {
-        font-size: 1.15rem;
-        color: #444;
-
-        background: rgba(255,255,255,0.9);
-
-        padding: 15px 25px;
-
+        font-size: 1.2rem;
+        color: #f8fafc;
+        background: rgba(30, 41, 59, 0.6);
+        padding: 15px 30px;
         border-radius: 12px;
-
         margin-bottom: 30px;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
     .btn {
         background: #2e7d32;
         color: white;
-
-        padding: 15px 35px;
-
-        font-size: 1rem;
-        font-weight: 600;
-
+        padding: 18px 45px;
+        font-size: 1.1rem;
+        font-weight: 700;
         border: none;
-        border-radius: 10px;
-
+        border-radius: 12px;
         cursor: pointer;
-
         transition: all 0.2s ease;
-
-        box-shadow:
-            0 4px 12px rgba(46,125,50,0.25);
+        box-shadow: 0 6px 15px rgba(46,125,50,0.3);
     }
 
     .btn:hover {
         background: #1b5e20;
-        transform: translateY(-2px);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(46,125,50,0.4);
     }
 
     .btn:active {
@@ -97,57 +232,57 @@
         text-decoration: none;
     }
 
-    /* Toss Animation, kinda goofy but works */
-    .coin-anim {
-        font-size: 8rem;
+    /* 5. Win/Loss Jumbotron Effects */
+    .win-fireworks {
         position: absolute;
-        top: 50%;
+        top: -60px;
         left: 50%;
-        margin-top: -50px;
-        transform: translate(-50%, -50%);
-        animation: flipCoin 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        z-index: 50;
-    }
-
-    @keyframes flipCoin {
-        0% { transform: translate(-50%, -50%) rotateY(0deg) scale(1); opacity: 1; }
-        40% { transform: translate(-50%, -200%) rotateY(1440deg) scale(1.5); opacity: 1; }
-        85% { transform: translate(-50%, -50%) rotateY(2880deg) scale(1); opacity: 1; }
-        100% { transform: translate(-50%, -50%) rotateY(2880deg) scale(1); opacity: 0; visibility: hidden; }
-    }
-
-    .result-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        transform: translateX(-50%);
+        font-size: 5rem;
+        white-space: nowrap;
+        animation: explode 1.5s ease-out forwards;
+        animation-delay: 3s;
         opacity: 0;
-        animation: revealResult 0.5s ease forwards;
-        animation-delay: 1.8s; /* waits for coin to finish */
+        pointer-events: none;
     }
 
-    @keyframes revealResult {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+    @keyframes explode {
+        0% { transform: translateX(-50%) scale(0); opacity: 1; }
+        40% { transform: translateX(-50%) scale(1.5); opacity: 1; }
+        100% { transform: translateX(-50%) scale(2.5) translateY(-80px); opacity: 0; }
     }
     </style>
 </head>
 
 <body>
+    <div class="bg-glow"></div>
     
-    <div class="coin-anim">🪙</div>
+    <!-- Stadium Dimming Overlay -->
+    <div class="overlay"></div>
 
-    <div class="result-container">
-        {% if won == 1 %}
-            <div class="result">You won the Toss!</div>
-            <p>You will go first!</p>
-        {% else %}
-            <div class="result">You lost the Toss</div>
-            <p>Computer will go first</p>
-        {% endif %}
+    <!-- 3D Coin Animation -->
+    <div class="coin-wrapper">
+        <div class="coin-anim">
+            <div class="coin-face coin-front">H</div>
+            <div class="coin-face coin-back">T</div>
+        </div>
+    </div>
 
-        <a href="/setup">
-            <button class="btn">Continue to the game</button>
-        </a>
+    <!-- Camera Shake & Results -->
+    <div class="shake-container">
+        <div class="result-container">
+            {% if won == 1 %}
+                <div class="result-box">You won the Toss!</div>
+                <p>You will go first!</p>
+            {% else %}
+                <div class="result-box">You lost the Toss</div>
+                <p>Computer will go first</p>
+            {% endif %}
+
+            <a href="/setup">
+                <button class="btn">Continue to the game</button>
+            </a>
+        </div>
     </div>
 
 </body>

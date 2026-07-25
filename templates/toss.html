@@ -12,7 +12,23 @@
     box-sizing: border-box;
 }
 
+
+    /* Abstract Premium Background */
+    .bg-glow {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(103, 184, 95, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        pointer-events: none;
+    }
+
 body {
+    background-color: #0b0f19;
+    color: #ffffff;
     min-height: 100vh;
 
     display: flex;
@@ -21,21 +37,14 @@ body {
 
     font-family: "Segoe UI", sans-serif;
 
-    background:
-        linear-gradient(
-            to bottom,
-            #dff2ff 0%,
-            #dff2ff 45%,
-            #67b85f 45%,
-            #5ba854 100%
-        );
+    
 }
 
 .container {
     width: 90%;
     max-width: 650px;
 
-    background: rgba(255,255,255,0.95);
+    background: rgba(30, 41, 59, 0.6);
 
     padding: 50px;
 
@@ -53,13 +62,13 @@ body {
 }
 
 h1 {
-    color: #1f3d21;
+    color: #67b85f;
     font-size: 2.7rem;
     margin-bottom: 10px;
 }
 
 .subtitle {
-    color: #666;
+    color: #94a3b8;
     margin-bottom: 35px;
     font-size: 1.05rem;
 }
@@ -90,22 +99,62 @@ h1 {
         inset 0 4px 8px rgba(255,255,255,0.4),
         0 6px 15px rgba(0,0,0,0.15);
 
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    perspective: 1000px;
 }
 
 .coin-btn:hover {
-    transform: translateY(-4px);
+    transform: translateY(-4px) scale(1.05);
     background: #eab308;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 .coin-btn:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.95);
 }
 
 .coin-icon {
-    display: block;
-    font-size: 2rem;
+    display: inline-block;
+    font-size: 2.5rem;
     margin-bottom: 10px;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.coin-btn:hover .coin-icon {
+    transform: rotateY(360deg);
+}
+
+/* Custom Select Dropdown UI */
+.theme-selection {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+select#cricket-themes {
+    appearance: none;
+    -webkit-appearance: none;
+    background: #fff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%232e7d32%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") no-repeat right 15px top 50%;
+    background-size: 12px auto;
+    padding: 12px 40px 12px 20px;
+    border: 2px solid #67b85f;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f8fafc;
+    background-color: #1e293b;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 300px;
+    outline: none;
+}
+
+select#cricket-themes:hover, select#cricket-themes:focus {
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    border-color: #1b5e20;
 }
 
 .note {
@@ -117,6 +166,7 @@ h1 {
 </head>
 
 <body>
+    <div class="bg-glow"></div>
 
 <div class="container">
 
@@ -128,14 +178,13 @@ h1 {
 
     <form method="POST" action="/toss_result">
         <div class="buttons">
-
             <button
                 type="submit"
                 name="choice"
                 value="0"
                 class="coin-btn">
-                <span class="coin-icon">🪙</span>
-                HEADS
+                <span class="coin-icon">H</span>
+                <br>HEADS
             </button>
 
             <button
@@ -143,21 +192,21 @@ h1 {
                 name="choice"
                 value="1"
                 class="coin-btn">
-                <span class="coin-icon">🪙</span>
-                TAILS
+                <span class="coin-icon">T</span>
+                <br>TAILS
             </button>
-	    
-	    <select id="cricket-themes" name="deck_theme">
-    		<option value="" disabled selected>Select a theme...</option>
-    		<option value="odi">ODI Theme</option>
-    		<option value="t20i">T20I Theme</option>
-    		<option value="ipl">IPL Theme</option>
-    		<option value="test">Test Theme</option>
-	    </select>	
-
+        </div>
+        
+        <div class="theme-selection">
+            <select id="cricket-themes" name="deck_theme">
+                <option value="" disabled selected>Select a deck theme...</option>
+                <option value="odi">ODI Theme</option>
+                <option value="t20i">T20I Theme</option>
+                <option value="ipl">IPL Theme</option>
+                <option value="test">Test Theme</option>
+            </select>
         </div>
     </form>
-
 
 </div>
 
