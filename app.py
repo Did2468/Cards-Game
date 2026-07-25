@@ -4,6 +4,7 @@ import uuid
 import os
 import game_setup
 import game_engine
+import seed
 from database import db
 from models import IplPlayer, OdiPlayer, T20iPlayer, TestPlayer, GameSession
 
@@ -18,7 +19,7 @@ db.init_app(app)
 
 with app.app_context():
 	db.create_all()  # only creates tables that dont exist yet.doesnt touch my existing tables
-
+	seed.seed_if_empty() 	# solves the issue where when the server goes inactive it loses the .db file so need to restart this eveyrtime
 # theme -> model. Run seed_from_json.py first to populate these tables.
 THEME_MODELS = {
 	'ipl': IplPlayer,
@@ -241,7 +242,7 @@ def game_over():
 
 
 if __name__ == "__main__":
-	app.run(debug=True)
-#	port = int(os.environ.get('PORT', 5000))
-#	app.run(host='0.0.0.0', port=port)
+#	app.run(debug=True)
+	port = int(os.environ.get('PORT', 5000))
+	app.run(host='0.0.0.0', port=port)
 	
