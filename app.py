@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, session, redirect
+from dotenv import load_dotenv
 import random
 import uuid
 import os
@@ -8,11 +9,14 @@ import seed
 from database import db
 from models import IplPlayer, OdiPlayer, T20iPlayer, TestPlayer, GameSession
 
+# Load environment variables from .env file locally
+load_dotenv()
+
 app = Flask(__name__)
 app.secret_key = "Passwordis2468"
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'game_data.db')
+#Fetching the db from neon
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -245,4 +249,3 @@ if __name__ == "__main__":
 #	app.run(debug=True)
 	port = int(os.environ.get('PORT', 5000))
 	app.run(host='0.0.0.0', port=port)
-	
