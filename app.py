@@ -7,7 +7,7 @@ import game_setup
 import game_engine
 import seed
 from database import db
-from models import IplPlayer, OdiPlayer, T20iPlayer, TestPlayer, GameSession
+from models import IplPlayer, OdiPlayer, T20iPlayer, TestPlayer, GameSession,User
 
 # Load environment variables from .env file locally
 load_dotenv()
@@ -75,8 +75,59 @@ def create_game(deck_theme, turn, player_deck=None, ai_deck=None, round_num=1):
 # Home page
 @app.route("/")
 def home():
-	return render_template('home.html')
+	user_id = session.get('user_id')
+	current_user = None
+	if user_id:
+		db_user = db.session.get(User,user_id)
+		if db_user:
+			current_user = {
+				'username':db_user.username,
+				'is_guest':False	
+			}
+	if not current_user:
+		if 'guest_id' not in session:
+			session['guest_id'] = f"Guest_{random.randint(1000,9999)}"
+			current_user = {
+				'username':session['guest_id'],
+				'is_guest':True
+			}
+	return render_template('home.html',user=current_user)
 
+#Login Page
+@app.route("/login")
+def login():
+	return render_template("login.html",error=None)
+#Login handle
+@app.route("/login-handle",methods=["POST","GET"])
+def login_handle():
+	username = request.form.get("username","").strip()
+	password = request.form.get("password","").strip()
+
+	user = User.query.filter_by(username=username).first()
+	if user and user.check_pass:
+		session["user_id"] = user.id
+		return render_template("home.html",user=user)
+	else:
+		return render_template("login.html",error="Invalid username or password")
+
+#Register page
+@app.route("/register")
+def register():
+	return render_template("register.html",error=None)
+
+#register handling page
+@app.route("/register-handle",methods=["POST","GET"])
+def register_handle():
+	username = request.form.get("username","").strip()
+	password = request.form.get("password","").strip()
+	existing_user = User.query.filter_by(username=username).first()
+	if existing_user:
+		return render_template("register.html",error="Username already taken try taking a new one")
+	new_user = User(username=username)
+	new_user.set_password(password)
+	db.session.add(new_user)
+	db.session.commit()
+	return render_template("login.html",error="Account Created Succesffully.Please Login!!")
 
 # toss page
 @app.route("/toss")
