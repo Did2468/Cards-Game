@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Auto-reloads page every 2 seconds to check if Opponent joined -->
+<meta http-equiv="refresh" content="2">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waiting for Player 2 - Cricket Card Battle</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.bg-glow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(103, 184, 95, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+body {
+    background-color: #0b0f19;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    width: 90%;
+    max-width: 480px;
+    background: rgba(30, 41, 59, 0.6);
+    padding: 40px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.room-card {
+    background: #0f172a;
+    border: 2px dashed #67b85f;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 25px 0;
+}
+
+.code-title {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.room-code {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #67b85f;
+    letter-spacing: 6px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid #67b85f;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+p.status-text {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+}
+
+.btn-cancel {
+    display: inline-block;
+    margin-top: 25px;
+    color: #ef4444;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-cancel:hover {
+    text-decoration: underline;
+}
+</style>
+</head>
+
+<body>
+    <div class="bg-glow"></div>
+
+<div class="container">
+    <h1 style="color: #ffffff; font-size: 1.8rem;">Room Created!</h1>
+    <p style="color: #94a3b8; margin-top: 5px;">Share this code with your friend to connect</p>
+
+    <div class="room-card">
+        <div class="code-title">Room Code</div>
+        <div class="room-code">{{ room_code }}</div>
+    </div>
+
+    <div class="spinner"></div>
+    <p class="status-text">Waiting for opponent to join...</p>
+
+    <a href="/" class="btn-cancel">Cancel Room</a>
+</div>
+
+</body>
+</html>

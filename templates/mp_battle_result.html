@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Round Result - Cricket Card Battle</title>
+
+{% if auto_refresh %}
+<meta http-equiv="refresh" content="3;url=/mp/play/{{ room_code }}">
+{% endif %}
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: #0b0f19;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    width: 90%;
+    max-width: 520px;
+    background: rgba(30, 41, 59, 0.6);
+    padding: 35px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.result-header {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: {% if winner_text == 'You Won!' %}#67b85f{% elif winner_text == 'Tie!' %}#f59e0b{% else %}#ef4444{% endif %};
+}
+
+.cards-comparison {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.mini-card {
+    flex: 1;
+    background: #0f172a;
+    border: 1px solid #334155;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.stat-highlight {
+    color: #67b85f;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+.btn {
+    display: inline-block;
+    background: #2e7d32;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="result-header">{{ winner_text }}</div>
+    <p style="color: #94a3b8;">Compared Stat: <strong>{{ stat_name }}</strong></p>
+
+    <div class="cards-comparison">
+        <div class="mini-card">
+            <h4>Your Card</h4>
+            <p style="color: #cbd5e1; margin-top: 5px;">{{ my_card.name }}</p>
+            <div class="stat-highlight">{{ my_stat_val }}</div>
+        </div>
+        <div class="mini-card">
+            <h4>Opponent</h4>
+            <p style="color: #cbd5e1; margin-top: 5px;">{{ opp_card.name }}</p>
+            <div class="stat-highlight">{{ opp_stat_val }}</div>
+        </div>
+    </div>
+
+    <a href="/mp/play/{{ room_code }}" class="btn">Next Round</a>
+</div>
+
+</body>
+</html>

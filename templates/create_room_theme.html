@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Theme - Cricket Card Battle</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+.bg-glow {
+    position: fixed; top: 50%; left: 50%;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(103, 184, 95, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+    transform: translate(-50%, -50%); z-index: -1; pointer-events: none;
+}
+
+body {
+    background-color: #0b0f19; color: #ffffff;
+    min-height: 100vh; display: flex; justify-content: center; align-items: center;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.container {
+    width: 90%; max-width: 550px; background: rgba(30, 41, 59, 0.6);
+    padding: 50px; border-radius: 18px; text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    animation: slideUp 0.5s ease forwards; opacity: 0;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+h1 { color: #67b85f; font-size: 2.2rem; margin-bottom: 15px; }
+p { color: #94a3b8; margin-bottom: 25px; font-size: 1.05rem; }
+
+select {
+    width: 240px; padding: 12px; font-size: 1rem; text-align: center;
+    border: 2px solid #475569; background: #1e293b; color: white;
+    border-radius: 10px; outline: none; margin-bottom: 25px; cursor: pointer;
+}
+
+select:focus { border-color: #2e7d32; }
+
+.btn {
+    background: #2e7d32; color: white; padding: 15px 35px;
+    font-size: 1rem; font-weight: 600; border: none; border-radius: 10px;
+    cursor: pointer; transition: all 0.2s ease;
+}
+
+.btn:hover { background: #1b5e20; transform: translateY(-2px); }
+.back-link { display: block; margin-top: 20px; color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
+</style>
+</head>
+
+<body>
+    <div class="bg-glow"></div>
+
+    <div class="container">
+        <h1>Room Setup</h1>
+        <p>Select Deck Theme</p>
+
+        <form method="GET" action="/mp/create/size">
+            <select name="deck_theme">
+                <option value="ipl" selected>IPL Collection</option>
+                <option value="odi">ODI Legends</option>
+                <option value="t20i">T20 International</option>
+                <option value="test">Test Cricket</option>
+            </select>
+            <br>
+            <button type="submit" class="btn">Next: Deck Size →</button>
+        </form>
+
+        <a href="/" class="back-link">← Cancel</a>
+    </div>
+
+</body>
+</html>

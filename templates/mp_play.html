@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cricket Card Battle - PvP</title>
+
+{% if not is_my_turn %}
+<!-- Auto-refresh every 2 seconds while waiting for opponent's turn -->
+<meta http-equiv="refresh" content="2">
+{% endif %}
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Abstract Premium Background */
+.bg-glow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(103, 184, 95, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+body {
+    background-color: #0b0f19;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Segoe UI", sans-serif;
+    padding: 10px 10px 80px 10px; /* Padding at bottom for fixed scoreboard */
+    overflow-x: hidden;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    max-width: 340px;
+    text-align: center;
+}
+
+/* Card Styling */
+.card {
+    width: 100%;
+    max-width: 340px;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 12px 25px rgba(0,0,0,.3);
+    border: 3px solid #e0b52c;
+    animation: appear .25s ease;
+}
+
+@keyframes appear {
+    from { transform: scale(.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Header */
+.card-header {
+    background: #111827;
+    color: white;
+    padding: 14px;
+    text-align: center;
+}
+
+.card-header h1 {
+    font-size: 1.35rem;
+}
+
+.player-name {
+    margin-top: 5px;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.subtitle {
+    text-align: center;
+    color: #94a3b8;
+    font-size: .85rem;
+    margin: 8px 0;
+}
+
+/* Interactive Form Grid (When it is your turn) */
+form.stats-form {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.stat {
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 10px;
+    padding: 8px;
+    cursor: pointer;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: .15s ease;
+    user-select: none;
+    min-width: 0;
+}
+
+.stat:hover {
+    transform: scale(1.03);
+    background: #374151;
+    border-color: #67b85f;
+    box-shadow: 0 5px 12px rgba(46,125,50,.2);
+}
+
+.stat:active {
+    transform: scale(.98);
+}
+
+input[type="submit"] {
+    display: none;
+}
+
+.stat-title {
+    font-size: .65rem;
+    color: #94a3b8;
+}
+
+.stat-value {
+    font-size: .95rem;
+    font-weight: 800;
+    color: #f8fafc;
+    overflow: hidden;
+}
+
+/* View-only Grid (When waiting for Opponent) */
+.view-stats {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.view-stat {
+    background: rgba(30, 41, 59, 0.6);
+    border-radius: 10px;
+    padding: 8px;
+    font-size: .8rem;
+    border-left: 3px solid #607d8b;
+    text-align: center;
+}
+
+.view-stat strong {
+    display: block;
+    color: #94a3b8;
+    font-size: .65rem;
+}
+
+.view-stat-val {
+    font-weight: 700;
+    color: #f8fafc;
+    font-size: .95rem;
+}
+
+/* Waiting Header Message */
+.waiting-header {
+    margin-bottom: 12px;
+    color: white;
+}
+
+.waiting-header p {
+    font-size: .9rem;
+    color: #e0b52c;
+    font-weight: bold;
+}
+
+.footer {
+    text-align: center;
+    padding: 10px 0;
+    color: #888;
+    font-size: .7rem;
+}
+
+/* Scoreboard */
+.scoreboard {
+    position: fixed;
+    bottom: 0; left: 0; width: 100%;
+    background: #1b5e20;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 12px;
+    font-weight: 800;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+
+.score-badge {
+    background: #e0b52c;
+    color: #222;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 1rem;
+}
+</style>
+</head>
+
+<body>
+    <div class="bg-glow"></div>
+
+    <!-- Scoreboard -->
+    <div class="scoreboard">
+        <div>YOU: <span class="score-badge">{{ cards_left }}</span></div>
+        <div>OPPONENT: <span class="score-badge">{{ opp_cards_left }}</span></div>
+    </div>
+
+    <div class="container">
+
+        {% if not is_my_turn %}
+        <div class="waiting-header">
+            <p>The opponent is choosing a stat...</p>
+            <span style="font-size: 0.75rem; color: #94a3b8;">Reviewing your card while waiting...</span>
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <div class="card-header">
+                <h1>🏏 Your Card</h1>
+                <div class="player-name">{{ my_card.name if my_card else 'Player' }}</div>
+            </div>
+
+            {% if is_my_turn %}
+                <p class="subtitle">Tap a stat to battle</p>
+
+                <form method="POST" action="/mp/choice/{{ room_code }}" class="stats-form">
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="matches">
+                        <div class="stat-title">Matches</div>
+                        <div class="stat-value">{{ my_card.matches }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="balls_bowled">
+                        <div class="stat-title">Balls bowled</div>
+                        <div class="stat-value">{{ my_card.balls_bowled }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="not_outs">
+                        <div class="stat-title">Not Outs</div>
+                        <div class="stat-value">{{ my_card.not_outs }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="runs_given">
+                        <div class="stat-title">Runs Given</div>
+                        <div class="stat-value">{{ my_card.runs_given }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="runs_scored">
+                        <div class="stat-title">Runs</div>
+                        <div class="stat-value">{{ my_card.runs_scored }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="catches">
+                        <div class="stat-title">Catches</div>
+                        <div class="stat-value">{{ my_card.catches }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="highest">
+                        <div class="stat-title">High Score</div>
+                        <div class="stat-value">{{ my_card.highest }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="wickets">
+                        <div class="stat-title">Wickets</div>
+                        <div class="stat-value">{{ my_card.wickets }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="bat_avg">
+                        <div class="stat-title">Batting Avg</div>
+                        <div class="stat-value">{{ my_card.bat_avg }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="ball_avg">
+                        <div class="stat-title">Bowl Avg</div>
+                        <div class="stat-value">{{ my_card.ball_avg }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="balls_faced">
+                        <div class="stat-title">Balls</div>
+                        <div class="stat-value">{{ my_card.balls_faced }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="economy">
+                        <div class="stat-title">Economy</div>
+                        <div class="stat-value">{{ my_card.economy }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="bat_sr">
+                        <div class="stat-title">Strike Rate</div>
+                        <div class="stat-value">{{ my_card.bat_sr }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="ball_sr">
+                        <div class="stat-title">Bowl Sr</div>
+                        <div class="stat-value">{{ my_card.ball_sr }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="hundreds">
+                        <div class="stat-title">Hundreds</div>
+                        <div class="stat-value">{{ my_card.hundreds }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="five_w">
+                        <div class="stat-title">5wi</div>
+                        <div class="stat-value">{{ my_card.five_w }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="fifties">
+                        <div class="stat-title">Fifties</div>
+                        <div class="stat-value">{{ my_card.fifties }}</div>
+                    </label>
+
+                    <label class="stat">
+                        <input type="submit" name="stat_choice" value="best_figures">
+                        <div class="stat-title">Best Figures</div>
+                        <div class="stat-value">{{ my_card.best_w }}/{{ my_card.best_r }}</div>
+                    </label>
+                </form>
+
+                <div class="footer">Tap a stat to play</div>
+
+            {% else %}
+                <!-- View-only stats when it's the opponent's turn -->
+                <div class="view-stats">
+                    <div class="view-stat"><strong>Matches</strong><div class="view-stat-val">{{ my_card.matches }}</div></div>
+                    <div class="view-stat"><strong>Balls Bowled</strong><div class="view-stat-val">{{ my_card.balls_bowled }}</div></div>
+                    <div class="view-stat"><strong>Not Outs</strong><div class="view-stat-val">{{ my_card.not_outs }}</div></div>
+                    <div class="view-stat"><strong>Runs Given</strong><div class="view-stat-val">{{ my_card.runs_given }}</div></div>
+                    <div class="view-stat"><strong>Runs</strong><div class="view-stat-val">{{ my_card.runs_scored }}</div></div>
+                    <div class="view-stat"><strong>Catches</strong><div class="view-stat-val">{{ my_card.catches }}</div></div>
+                    <div class="view-stat"><strong>High Score</strong><div class="view-stat-val">{{ my_card.highest }}</div></div>
+                    <div class="view-stat"><strong>Wickets</strong><div class="view-stat-val">{{ my_card.wickets }}</div></div>
+                    <div class="view-stat"><strong>Batting Avg</strong><div class="view-stat-val">{{ my_card.bat_avg }}</div></div>
+                    <div class="view-stat"><strong>Bowl Avg</strong><div class="view-stat-val">{{ my_card.ball_avg }}</div></div>
+                    <div class="view-stat"><strong>Balls</strong><div class="view-stat-val">{{ my_card.balls_faced }}</div></div>
+                    <div class="view-stat"><strong>Economy</strong><div class="view-stat-val">{{ my_card.economy }}</div></div>
+                    <div class="view-stat"><strong>Strike Rate</strong><div class="view-stat-val">{{ my_card.bat_sr }}</div></div>
+                    <div class="view-stat"><strong>Bowl Sr</strong><div class="view-stat-val">{{ my_card.ball_sr }}</div></div>
+                    <div class="view-stat"><strong>Hundreds</strong><div class="view-stat-val">{{ my_card.hundreds }}</div></div>
+                    <div class="view-stat"><strong>5wi</strong><div class="view-stat-val">{{ my_card.five_w }}</div></div>
+                    <div class="view-stat"><strong>Fifties</strong><div class="view-stat-val">{{ my_card.fifties }}</div></div>
+                    <div class="view-stat"><strong>Best Figures</strong><div class="view-stat-val">{{ my_card.best_w }}/{{ my_card.best_r }}</div></div>
+                </div>
+
+                <div class="footer">Waiting for opponent to choose...</div>
+            {% endif %}
+
+        </div>
+    </div>
+</body>
+</html>

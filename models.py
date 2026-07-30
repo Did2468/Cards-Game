@@ -103,3 +103,27 @@ class User(db.Model):
 		self.password = generate_password_hash(password)
 	def check_pass(self,password):
 		return check_password_hash(self.password,password)
+
+class MultiplayerSession(db.Model):
+	__tablename = 'multiplayer_session'
+	id = db.Column(db.Integer,primary_key=True)
+	room_code = db.Column(db.String(6),unique=True,nullable=False)
+	
+	host_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
+	guest_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=True)
+
+	status = db.Column(db.String(50),default='waiting')
+	turn = db.Column(db.Integer,default=1)
+	deck_theme = db.Column(db.String(20),nullable=False)
+	deck_size = db.Column(db.Integer,default=5)
+
+	host_deck = db.Column(db.JSON,nullable=True)
+	guest_deck = db.Column(db.JSON,nullable=True)
+
+	last_stat = db.Column(db.String(50),nullable=True)
+	last_winner = db.Column(db.String(10),nullable=True)
+	host_card_played = db.Column(db.JSON,nullable=True)
+	guest_card_played = db.Column(db.JSON,nullable=True)
+
+	def __repr__(self):
+		return f"<MultiplayerSession {self.room_code} - Status: {self.status}>"
