@@ -32,6 +32,12 @@ THEME_MODELS = {
 	't20i': T20iPlayer,
 	'test': TestPlayer,
 }
+def cleanup_stale_mp_sessions():
+    try:
+        MultiplayerSession.query.filter_by(status="completed").delete()
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
 def generate_room_code(length=4):
     """Generates a unique 4-character uppercase room code."""
     characters = string.ascii_uppercase + string.digits
@@ -146,7 +152,7 @@ def handle_create_room():
     user_id = session.get('user_id')
     if not user_id:
         return render_template("login.html", error="Please log in to create a room!")
-
+    cleanup_stale_mp_sessions()
     deck_theme = request.form.get("deck_theme", "ipl")
     deck_size = int(request.form.get("deck_size", 5))
     room_code = generate_room_code()
@@ -250,29 +256,37 @@ def mp_play(room_code):
     if not user_id:
         return redirect("/login")
 
-    # Fetch room from the db
     game_room = MultiplayerSession.query.filter_by(room_code=room_code).first()
 
-    if not game_room or game_room.status == "completed":
+    if not game_room:
         return redirect("/")
 
-    # Security check Ensure the user belongs to this match
+    is_host = (user_id == game_room.host_id)
     if user_id != game_room.host_id and user_id != game_room.guest_id:
         return redirect("/")
 
-    # Determine guests and hosts with the players
-    is_host = (user_id == game_room.host_id)
     my_deck = game_room.host_deck if is_host else game_room.guest_deck
     opponent_deck = game_room.guest_deck if is_host else game_room.host_deck
 
-    # Check for game over
-    if len(my_deck) == 0 or len(opponent_deck) == 0:
+    # 1. CHECK GAME OVER FIRST! (Applies whether status is completed or active)
+    if len(my_deck) == 0 or len(opponent_deck) == 0 or game_room.status == "completed":
+        if game_room.status != "completed":
+            # Set winner in DB
+            if len(my_deck) > 0:
+                game_room.winner_id = user_id
+            else:
+                game_room.winner_id = game_room.guest_id if is_host else game_room.host_id
+            game_room.status = "completed"
+            db.session.commit()
+
         return redirect(f"/mp/game_over/{room_code}")
 
-    # Fetch card data using your existing get_card helper
+    # 2. Check round result redirect only if game is still going
+    if game_room.status == "round_result":
+        return redirect(f"/mp/round_result/{room_code}")
+
+    # Fetch top card for current round
     my_card = get_card(game_room.deck_theme, my_deck[0])
-    
-    # Check whose turn it is 1 = Host turn, 2 = Guest turn
     is_my_turn = (game_room.turn == 1 and is_host) or (game_room.turn == 2 and not is_host)
 
     return render_template(
@@ -283,6 +297,7 @@ def mp_play(room_code):
         opp_cards_left=len(opponent_deck),
         is_my_turn=is_my_turn
     )
+
 
 @app.route("/mp/choice/<room_code>", methods=["POST"])
 def mp_choice(room_code):
@@ -343,7 +358,7 @@ def mp_choice(room_code):
     game_room.last_stat = stat_name
     game_room.host_card_played = host_card
     game_room.guest_card_played = guest_card
-
+    game_room.status = "round_result"
     db.session.commit()
 
     return redirect(f"/mp/round_result/{room_code}")
@@ -365,27 +380,38 @@ def mp_round_result(room_code):
     
     # Determine winner message relative to current user
     if (game_room.last_winner == 'host' and is_host) or (game_room.last_winner == 'guest' and not is_host):
-        winner_text = "You Won!"
+        result_text = "You Won!"
     else:
-        winner_text = "You Lost!"
-
-    my_stat_val = my_card.get(stat_name, 0) if my_card else 0
-    opp_stat_val = opp_card.get(stat_name, 0) if opp_card else 0
-
-    # Auto-refresh for opponent while they wait
-    is_my_turn = (game_room.turn == 1 and is_host) or (game_room.turn == 2 and not is_host)
+        result_text = "You Lost!"
+    my_deck_len = len(game_room.host_deck) if is_host else len(game_room.guest_deck)
+    opp_deck_len = len(game_room.guest_deck) if is_host else len(game_room.host_deck)
 
     return render_template(
         "mp_battle_result.html",
         room_code=room_code,
-        winner_text=winner_text,
-        stat_name=stat_name.replace('_', ' ').title(),
-        my_card=my_card,
-        opp_card=opp_card,
-        my_stat_val=my_stat_val,
-        opp_stat_val=opp_stat_val,
-        auto_refresh=not is_my_turn
+        result=result_text,
+        stat_choice=stat_name,
+        player_card=my_card,
+        ai_card=opp_card,
+        player_deck_size=my_deck_len,
+        ai_deck_size=opp_deck_len
     )
+@app.route("/mp/next_round/<room_code>")
+def mp_next_round(room_code):
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect("/login")
+
+    game_room = MultiplayerSession.query.filter_by(room_code=room_code).first()
+    if game_room:
+        # Only switch back to active if the game wasn't already completed!
+        if game_room.status == "round_result":
+            game_room.status = "active"
+            db.session.commit()
+
+    return redirect(f"/mp/play/{room_code}")
+
+
 @app.route("/mp/game_over/<room_code>")
 def mp_game_over(room_code):
     user_id = session.get('user_id')
@@ -396,11 +422,9 @@ def mp_game_over(room_code):
     if not game_room:
         return redirect("/")
 
-    is_host = (user_id == game_room.host_id)
-    my_deck = game_room.host_deck if is_host else game_room.guest_deck
 
     # Determine winner based on who still has cards in their deck
-    if len(my_deck) > 0:
+    if game_room.winner_id==user_id:
         result_title = "Victory!"
         message = "Dont get excited that was a fluke"
     else:
@@ -408,8 +432,6 @@ def mp_game_over(room_code):
         message = "Skill issue. You are a noob"
 
     # Mark room as completed in database
-    game_room.status = "completed"
-    db.session.commit()
 
     return render_template(
         "mp_game_over.html",

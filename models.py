@@ -124,6 +124,6 @@ class MultiplayerSession(db.Model):
 	last_winner = db.Column(db.String(10),nullable=True)
 	host_card_played = db.Column(db.JSON,nullable=True)
 	guest_card_played = db.Column(db.JSON,nullable=True)
-
+	winner_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable=True)
 	def __repr__(self):
 		return f"<MultiplayerSession {self.room_code} - Status: {self.status}>"

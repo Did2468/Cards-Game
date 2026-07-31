@@ -1,16 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Round Result - Cricket Card Battle</title>
-
-{% if auto_refresh %}
-<meta http-equiv="refresh" content="3;url=/mp/play/{{ room_code }}">
-{% endif %}
+<title>Battle Result - PvP</title>
 
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Abstract Premium Background */
+.bg-glow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(103, 184, 95, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    pointer-events: none;
+}
 
 body {
     background-color: #0b0f19;
@@ -19,79 +30,286 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", sans-serif;
+    padding: 15px 15px 80px 15px;
 }
 
 .container {
-    width: 90%;
-    max-width: 520px;
-    background: rgba(30, 41, 59, 0.6);
-    padding: 35px;
-    border-radius: 18px;
+    width: 100%;
+    max-width: 650px;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 }
 
-.result-header {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    color: {% if winner_text == 'You Won!' %}#67b85f{% elif winner_text == 'Tie!' %}#f59e0b{% else %}#ef4444{% endif %};
-}
-
-.cards-comparison {
-    display: flex;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.mini-card {
-    flex: 1;
-    background: #0f172a;
-    border: 1px solid #334155;
-    padding: 15px;
-    border-radius: 10px;
-}
-
-.stat-highlight {
-    color: #67b85f;
-    font-weight: bold;
-    font-size: 1.2rem;
-    margin-top: 10px;
-}
-
-.btn {
-    display: inline-block;
-    background: #2e7d32;
+.result {
+    font-size: 2.3rem;
+    font-weight: 900;
     color: white;
-    padding: 12px 30px;
+    margin-bottom: 12px;
+}
+
+.choice {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 18px;
+    overflow: hidden;
+    border: 4px solid #e0b52c;
+    box-shadow: 0 12px 25px rgba(0,0,0,.3);
+}
+
+.player-card {
+    border-top: 8px solid #2e7d32;
+    animation: slideInLeft 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-30px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.ai-card {
+    border-top: 8px solid #c62828;
+}
+
+.card-title {
+    background: #111827;
+    padding: 12px;
+}
+
+.card-title h3 {
+    font-size: .75rem;
+    color: #94a3b8;
+}
+
+.card-title h2 {
+    color: #67b85f;
+    font-size: 1.1rem;
+    margin-top: 5px;
+}
+
+.stats {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.stat {
+    background: rgba(30, 41, 59, 0.6);
     border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
+    padding: 8px;
+    font-size: .75rem;
+    font-weight: 700;
+    color: #f8fafc;
+}
+
+.stat-name {
+    display: block;
+    color: #94a3b8;
+    font-size: .65rem;
+}
+
+button {
+    margin-top: 20px;
+    background: #f4c542;
+    color: #222;
+    border: none;
+    padding: 13px 35px;
+    border-radius: 25px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #ffca28;
+}
+
+a { text-decoration: none; }
+
+@media(max-width:500px){
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Flip Animation */
+.ai-flip-container {
+    perspective: 2000px;
+    z-index: 10;
+}
+
+.flip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: rotateY(180deg);
+    animation: flipCard 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation-delay: 0.8s;
+}
+
+@keyframes flipCard {
+    to { transform: rotateY(0deg); }
+}
+
+.flip-back {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.flip-front {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    border-radius: 18px;
+    border: 4px solid #e0b52c;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    box-shadow: 0 12px 25px rgba(0,0,0,.3);
+}
+
+.result, .choice, button {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scoreboard */
+.scoreboard {
+    position: fixed;
+    bottom: 0; left: 0; width: 100%;
+    background: #1b5e20;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px;
+    font-weight: 800;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+
+.score-badge {
+    background: #e0b52c;
+    color: #222;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 1.1rem;
 }
 </style>
 </head>
 
 <body>
+    <div class="bg-glow"></div>
 
-<div class="container">
-    <div class="result-header">{{ winner_text }}</div>
-    <p style="color: #94a3b8;">Compared Stat: <strong>{{ stat_name }}</strong></p>
-
-    <div class="cards-comparison">
-        <div class="mini-card">
-            <h4>Your Card</h4>
-            <p style="color: #cbd5e1; margin-top: 5px;">{{ my_card.name }}</p>
-            <div class="stat-highlight">{{ my_stat_val }}</div>
-        </div>
-        <div class="mini-card">
-            <h4>Opponent</h4>
-            <p style="color: #cbd5e1; margin-top: 5px;">{{ opp_card.name }}</p>
-            <div class="stat-highlight">{{ opp_stat_val }}</div>
-        </div>
+    <!-- Scoreboard -->
+    <div class="scoreboard">
+        <div>YOU: <span class="score-badge">{{ player_deck_size }}</span></div>
+        <div>OPPONENT: <span class="score-badge">{{ ai_deck_size }}</span></div>
     </div>
 
-    <a href="/mp/play/{{ room_code }}" class="btn">Next Round</a>
-</div>
+    <div class="container">
+        <div class="result">
+            {{ result }}
+        </div>
 
+        <div class="choice">
+            Chosen Stat: <strong>{{ stat_choice.upper().replace('_',' ') }}</strong>
+        </div>
+
+        <div class="cards-container">
+            <!-- YOUR CARD -->
+            <div class="card player-card">
+                <div class="card-title">
+                    <h3>YOUR CARD</h3>
+                    <h2>{{ player_card.name if player_card else 'Player' }}</h2>
+                </div>
+
+                <div class="stats">
+                    <div class="stat"><span class="stat-name">Matches</span>{{ player_card.matches }}</div>
+                    <div class="stat"><span class="stat-name">Balls Bowled</span>{{ player_card.balls_bowled }}</div>
+                    <div class="stat"><span class="stat-name">Not Outs</span>{{ player_card.not_outs }}</div>
+                    <div class="stat"><span class="stat-name">Runs Given</span>{{ player_card.runs_given }}</div>
+                    <div class="stat"><span class="stat-name">Runs</span>{{ player_card.runs_scored }}</div>
+                    <div class="stat"><span class="stat-name">Catches</span>{{ player_card.catches }}</div>
+                    <div class="stat"><span class="stat-name">High Score</span>{{ player_card.highest }}</div>
+                    <div class="stat"><span class="stat-name">Wickets</span>{{ player_card.wickets }}</div>
+                    <div class="stat"><span class="stat-name">Batting Avg</span>{{ player_card.bat_avg }}</div>
+                    <div class="stat"><span class="stat-name">Bowl Avg</span>{{ player_card.ball_avg }}</div>
+                    <div class="stat"><span class="stat-name">Balls</span>{{ player_card.balls_faced }}</div>
+                    <div class="stat"><span class="stat-name">Economy</span>{{ player_card.economy }}</div>
+                    <div class="stat"><span class="stat-name">Strike Rate</span>{{ player_card.bat_sr }}</div>
+                    <div class="stat"><span class="stat-name">Bowl Sr</span>{{ player_card.ball_sr }}</div>
+                    <div class="stat"><span class="stat-name">Hundreds</span>{{ player_card.hundreds }}</div>
+                    <div class="stat"><span class="stat-name">5wi</span>{{ player_card.five_w }}</div>
+                    <div class="stat"><span class="stat-name">Fifties</span>{{ player_card.fifties }}</div>
+                    <div class="stat"><span class="stat-name">Best figures</span>{{ player_card.best_w }}/{{ player_card.best_r }}</div>
+                </div>
+            </div>
+
+            <!-- OPPONENT CARD (FLIP ANIMATION) -->
+            <div class="ai-flip-container">
+                <div class="flip-inner">
+                    <div class="flip-front">
+                        <div style="font-size: 3.5rem; margin-bottom: 10px;">🏏</div>
+                        <div style="color: white; font-weight: 800; font-size: 1.3rem; letter-spacing: 2px;">OPPONENT</div>
+                        <div style="color: #ffe082; font-size: 1rem; margin-top: 5px; font-weight: bold;">CARD</div>
+                    </div>
+
+                    <div class="flip-back card ai-card">
+                        <div class="card-title">
+                            <h3>OPPONENT CARD</h3>
+                            <h2>{{ ai_card.name if ai_card else 'Opponent' }}</h2>
+                        </div>
+
+                        <div class="stats">
+                            <div class="stat"><span class="stat-name">Matches</span>{{ ai_card.matches }}</div>
+                            <div class="stat"><span class="stat-name">Balls Bowled</span>{{ ai_card.balls_bowled }}</div>
+                            <div class="stat"><span class="stat-name">Not Outs</span>{{ ai_card.not_outs }}</div>
+                            <div class="stat"><span class="stat-name">Runs Given</span>{{ ai_card.runs_given }}</div>
+                            <div class="stat"><span class="stat-name">Runs</span>{{ ai_card.runs_scored }}</div>
+                            <div class="stat"><span class="stat-name">Catches</span>{{ ai_card.catches }}</div>
+                            <div class="stat"><span class="stat-name">High Score</span>{{ ai_card.highest }}</div>
+                            <div class="stat"><span class="stat-name">Wickets</span>{{ ai_card.wickets }}</div>
+                            <div class="stat"><span class="stat-name">Batting Avg</span>{{ ai_card.bat_avg }}</div>
+                            <div class="stat"><span class="stat-name">Bowl Avg</span>{{ ai_card.ball_avg }}</div>
+                            <div class="stat"><span class="stat-name">Balls</span>{{ ai_card.balls_faced }}</div>
+                            <div class="stat"><span class="stat-name">Economy</span>{{ ai_card.economy }}</div>
+                            <div class="stat"><span class="stat-name">Strike Rate</span>{{ ai_card.bat_sr }}</div>
+                            <div class="stat"><span class="stat-name">Bowl Sr</span>{{ ai_card.ball_sr }}</div>
+                            <div class="stat"><span class="stat-name">Hundreds</span>{{ ai_card.hundreds }}</div>
+                            <div class="stat"><span class="stat-name">5wi</span>{{ ai_card.five_w }}</div>
+                            <div class="stat"><span class="stat-name">Fifties</span>{{ ai_card.fifties }}</div>
+                            <div class="stat"><span class="stat-name">Best figures</span>{{ ai_card.best_w }}/{{ ai_card.best_r }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="/mp/next_round/{{ room_code }}">
+            <button>Next Round</button>
+        </a>
+    </div>
 </body>
 </html>
